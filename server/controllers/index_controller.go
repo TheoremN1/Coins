@@ -7,19 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type IIndexController interface {
-	Index(context *gin.Context)
-}
-
 type IndexController struct {
 	indexTemplate *template.Template
 }
 
-func (healthController *IndexController) Index(context *gin.Context) {
-	healthController.indexTemplate.Execute(context.Writer, nil)
-}
-
-func NewIndexController() IIndexController {
+func NewIndexController() *IndexController {
 	indexTemplate := template.Must(template.ParseFiles(filepath.Join("web", "index.html")))
 	return &IndexController{indexTemplate}
+}
+
+func (healthController *IndexController) Get(context *gin.Context) {
+	healthController.indexTemplate.Execute(context.Writer, nil)
 }
