@@ -1,4 +1,4 @@
-package internal
+package server
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/TheoremN1/Coins/configs"
-	"github.com/TheoremN1/Coins/internal/controllers"
+	"github.com/TheoremN1/Coins/server/controllers"
 
 	"github.com/gin-gonic/gin"
 )
