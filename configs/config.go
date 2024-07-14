@@ -7,7 +7,7 @@ type LaunchConf struct {
 
 type ServerConf struct {
 	Host string
-	Port int
+	Port string
 }
 
 type DatabaseConf struct {

@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/TheoremN1/Coins/internal/configs"
+	"github.com/TheoremN1/Coins/configs"
 	"github.com/TheoremN1/Coins/internal/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -30,20 +30,22 @@ func (router *Router) Run() {
 	router.engine.GET("/", indexController.Index)
 	router.engine.GET("/check", healthController.Check)
 
-	confFile, err := os.Open("myConf.json")
+	confFile, err := os.Open("configs/config.json")
 	if err != nil {
 		panic(err)
 	}
 	defer confFile.Close()
-	conf, err := io.ReadAll(confFile)
+	bytes, err := io.ReadAll(confFile)
 	if err != nil {
 		panic(err)
 	}
-	myConf := configs.LaunchConf{}
-	err = json.Unmarshal(conf, &myConf)
+	conf := configs.LaunchConf{}
+	err = json.Unmarshal(bytes, &conf)
 	if err != nil {
 		panic(err)
 	}
-	// listen 0.0.0.0:8080 (localhost:8080)
-	router.engine.Run()
+	err = router.engine.Run(conf.Server.Host + ":" + conf.Server.Port)
+	if err != nil {
+		panic(err)
+	}
 }
