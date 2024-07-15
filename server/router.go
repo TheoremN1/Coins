@@ -13,13 +13,11 @@ type Router struct {
 
 func NewRouter(
 	engine *gin.Engine,
-	indexController *controllers.IndexController,
-	healthController *controllers.HealthController,
+	balanceController *controllers.BalanceController,
 	url string,
 ) *Router {
 	router := Router{engine, url}
-	router.engine.GET("/", indexController.Get)
-	router.engine.GET("/check", healthController.Get)
+	router.engine.GET("/balance", balanceController.Get)
 	return &router
 }
 

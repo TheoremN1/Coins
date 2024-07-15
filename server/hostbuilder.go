@@ -15,10 +15,9 @@ import (
 )
 
 type Host struct {
-	Database         *gorm.DB
-	IndexController  *controllers.IndexController
-	HealthController *controllers.HealthController
-	Router           *Router
+	Database          *gorm.DB
+	BalanceController *controllers.BalanceController
+	Router            *Router
 }
 
 func NewHost() *Host {
@@ -49,13 +48,11 @@ func NewHost() *Host {
 		}
 		host.Database = database
 	*/
-	host.IndexController = controllers.NewIndexController()
-	host.HealthController = controllers.NewHealthController()
+	host.BalanceController = controllers.NewBalanceController()
 
 	host.Router = NewRouter(
 		gin.Default(),
-		host.IndexController,
-		host.HealthController,
+		host.BalanceController,
 		conf.Server.Host+":"+conf.Server.Port,
 	)
 
