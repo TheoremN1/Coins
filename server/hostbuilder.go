@@ -10,7 +10,7 @@ import (
 	"github.com/TheoremN1/Coins/server/controllers"
 	"github.com/gin-gonic/gin"
 
-	//"gorm.io/driver/postgres"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -37,17 +37,15 @@ func NewHost() *Host {
 	}
 
 	host := Host{}
-	/*
-		stringConnection := "host=" + conf.Database.Host +
-			" user=" + conf.Database.Username +
-			" dbname=" + conf.Database.Name +
-			" password=" + conf.Database.Password
-		database, err := gorm.Open(postgres.Open(stringConnection), &gorm.Config{})
-		if err != nil {
-			panic(err)
-		}
-		host.Database = database
-	*/
+	stringConnection := "host=" + conf.Database.Host +
+		" user=" + conf.Database.Username +
+		" dbname=" + conf.Database.Name +
+		" password=" + conf.Database.Password
+	database, err := gorm.Open(postgres.Open(stringConnection), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+	host.Database = database
 	host.BalanceController = controllers.NewBalanceController()
 
 	host.Router = NewRouter(
