@@ -13,7 +13,7 @@ func NewBalanceController() *BalanceController {
 }
 
 func (balanceController *BalanceController) Get(context *gin.Context) {
-	id := context.GetInt("id")
+	id := context.Request.URL.Query().Get("id")
 	//TODO: запрос с бд о балансе
 	context.JSON(http.StatusOK, gin.H{"id": id})
 }
