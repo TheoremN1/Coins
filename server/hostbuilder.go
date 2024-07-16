@@ -57,6 +57,7 @@ func NewHost() *Host {
 	host.Router = NewRouter(
 		gin.Default(),
 		host.BalanceController,
+		host.UserController,
 		conf.Server.Host+":"+conf.Server.Port,
 	)
 
