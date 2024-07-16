@@ -15,10 +15,18 @@ func MigrationUp(database *gorm.DB) {
 		&models.CoinRequest{},
 		&models.MerchRequest{},
 	)
+
 	roles := []*models.Role{
-		{Name: "user"},
-		{Name: "hr"},
-		{Name: "admin"},
+		{Key: "user", Name: "Пользователь"},
+		{Key: "hr", Name: "HR"},
+		{Key: "admin", Name: "Администратор"},
 	}
-	database.Create(&roles)
+	database.Save(&roles)
+
+	statuses := []*models.Status{
+		{Key: "wait", Name: "Ожидание"},
+		{Key: "ready", Name: "Готово"},
+		{Key: "denied", Name: "Отказано"},
+	}
+	database.Save(&statuses)
 }
