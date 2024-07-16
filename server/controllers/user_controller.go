@@ -17,8 +17,6 @@ func NewUserController(database *gorm.DB) *UserController {
 	return &UserController{database}
 }
 
-// TODO: Сделать проверку ввода на дурака
-
 func (userController *UserController) Get(context *gin.Context) {
 	id := context.Request.URL.Query().Get("id")
 	var status int
@@ -66,20 +64,40 @@ func (userController *UserController) Get(context *gin.Context) {
 
 func (userController *UserController) Post(context *gin.Context) {
 	query := context.Request.URL.Query()
-	user := models.User{
-		Username: query.Get("username"),
-		Name:     query.Get("name"),
-		Surname:  query.Get("surname"),
-		Balance:  0,
+	var user models.User
+	var isUsernameExist bool
+	var status int
+	userController.database.
+		Model(user).
+		Where("username = ?", query.Get("username")).
+		Find(&isUsernameExist)
+	if !isUsernameExist {
+		user = models.User{
+			Username: query.Get("username"),
+			Name:     query.Get("name"),
+			Surname:  query.Get("surname"),
+			Balance:  0,
+		}
+		userController.database.Create(&user)
+		var role models.Role
+		var isRoleExist bool
+		userController.database.
+			Model(role).
+			Where("role = ?", query.Get("role")).
+			Find(&isRoleExist)
+		if isRoleExist {
+			userController.database.Model(&role).Where("key = ?", query.Get("role")).First(&role)
+		} else {
+			userController.database.Model(&role).Where("key = ?", "user").First(&role)
+		}
+		role.Users = append(role.Users, user)
+		status = http.StatusOK
+	} else {
+		status = http.StatusBadRequest
 	}
-	userController.database.Create(&user)
-
-	var role models.Role
-	userController.database.Model(&role).Where("key = ?", query.Get("role")).First(&role)
-	role.Users = append(role.Users, user)
-
-	context.JSON(http.StatusOK, gin.H{
-		"id": user.Id,
+	context.JSON(status, gin.H{
+		"id":     user.Id,
+		"status": status,
 	})
 }
 
