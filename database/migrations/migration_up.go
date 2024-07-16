@@ -15,4 +15,10 @@ func MigrationUp(database *gorm.DB) {
 		&models.CoinRequest{},
 		&models.MerchRequest{},
 	)
+	roles := []*models.Role{
+		{Name: "user"},
+		{Name: "hr"},
+		{Name: "admin"},
+	}
+	database.Create(&roles)
 }
