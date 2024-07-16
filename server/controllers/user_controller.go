@@ -17,6 +17,8 @@ func NewUserController(database *gorm.DB) *UserController {
 	return &UserController{database}
 }
 
+// TODO: Сделать проверку ввода на дурака
+
 func (userController *UserController) Get(context *gin.Context) {
 	id := context.Request.URL.Query().Get("id")
 	var status int
@@ -33,7 +35,6 @@ func (userController *UserController) Get(context *gin.Context) {
 					"name":    user.Name,
 					"surname": user.Surname,
 					"balance": user.Balance,
-					"role":    user.Role,
 				}
 			}
 		} else {
@@ -59,16 +60,26 @@ func (userController *UserController) Get(context *gin.Context) {
 			"name":    user.Name,
 			"surname": user.Surname,
 			"balance": user.Balance,
-			"role":    user.Role.Name,
 		})
 	}
 }
 
 func (userController *UserController) Post(context *gin.Context) {
-	status := http.StatusOK
-	context.JSON(status, gin.H{
-		"method": "post",
-		"status": status,
+	query := context.Request.URL.Query()
+	user := models.User{
+		Username: query.Get("username"),
+		Name:     query.Get("name"),
+		Surname:  query.Get("surname"),
+		Balance:  0,
+	}
+	userController.database.Create(&user)
+
+	var role models.Role
+	userController.database.Model(&role).Where("key = ?", query.Get("role")).First(&role)
+	role.Users = append(role.Users, user)
+
+	context.JSON(http.StatusOK, gin.H{
+		"id": user.Id,
 	})
 }
 
