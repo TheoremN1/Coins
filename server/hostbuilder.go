@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/TheoremN1/Coins/configs"
+	"github.com/TheoremN1/Coins/database/migrations"
 	"github.com/TheoremN1/Coins/server/controllers"
 	"github.com/gin-gonic/gin"
 
@@ -36,7 +37,6 @@ func NewHost() *Host {
 		panic(err)
 	}
 
-	host := Host{}
 	stringConnection := "host=" + conf.Database.Host +
 		" user=" + conf.Database.Username +
 		" dbname=" + conf.Database.Name +
@@ -45,9 +45,13 @@ func NewHost() *Host {
 	if err != nil {
 		panic(err)
 	}
-	host.Database = database
-	host.BalanceController = controllers.NewBalanceController()
+	migrations.MigrationDown(database)
+	migrations.MigrationUp(database)
 
+	host := Host{}
+
+	host.Database = database
+	host.BalanceController = controllers.NewBalanceController(host.Database)
 	host.Router = NewRouter(
 		gin.Default(),
 		host.BalanceController,
