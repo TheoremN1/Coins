@@ -18,18 +18,23 @@ func NewBalanceController(database *gorm.DB) *BalanceController {
 
 func (balanceController *BalanceController) Get(context *gin.Context) {
 	id := context.Request.URL.Query().Get("id")
-	var user models.User
-	var exists bool
-	err := balanceController.database.Model(user).
-		Where("id = ?", id).
-		Find(&exists).
-		Error
 	var status int
-	if err != nil || !exists {
+	var user models.User
+	if id == "" {
 		status = http.StatusBadRequest
 	} else {
-		status = http.StatusOK
-		balanceController.database.Model(user).Where("id = ?", id).First(user)
+		var exists bool
+		err := balanceController.database.
+			Model(user).
+			Where("id = ?", id).
+			Find(&exists).
+			Error
+		if err != nil || !exists {
+			status = http.StatusBadRequest
+		} else {
+			status = http.StatusOK
+			balanceController.database.Model(user).Where("id = ?", id).First(user)
+		}
 	}
 
 	context.JSON(status, gin.H{
