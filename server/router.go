@@ -19,10 +19,10 @@ func NewRouter(
 ) *Router {
 	router := Router{engine, url}
 	router.engine.GET("/balance", balanceController.Get)
-	router.engine.GET("/user", userController.Get)
-	router.engine.POST("/user", userController.Post)
-	router.engine.PUT("/user", userController.Put)
-	router.engine.DELETE("/user", userController.Delete)
+	router.engine.GET("/users", userController.Get)
+	router.engine.POST("/users", userController.Post)
+	router.engine.PUT("/users", userController.Put)
+	router.engine.DELETE("/users", userController.Delete)
 	return &router
 }
 
