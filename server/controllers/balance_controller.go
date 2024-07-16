@@ -25,7 +25,6 @@ func (balanceController *BalanceController) Get(context *gin.Context) {
 	} else {
 		var exists bool
 		err := balanceController.database.
-			Model(user).
 			Where("id = ?", id).
 			Find(&exists).
 			Error
@@ -33,7 +32,9 @@ func (balanceController *BalanceController) Get(context *gin.Context) {
 			status = http.StatusBadRequest
 		} else {
 			status = http.StatusOK
-			balanceController.database.Model(user).Where("id = ?", id).First(user)
+			balanceController.database.
+				Where("id = ?", id).
+				First(user)
 		}
 	}
 
