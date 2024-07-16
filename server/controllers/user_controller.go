@@ -41,17 +41,16 @@ func (userController *UserController) Get(context *gin.Context) {
 
 		context.JSON(status, hash)
 	} else {
-		var exists bool
-		err := userController.database.
+		var users []models.User
+		userController.database.
 			Model(user).
 			Where("id = ?", id).
-			Find(&exists).
-			Error
-		if err != nil || !exists {
+			Find(&users)
+		if len(users) == 0 {
 			status = http.StatusBadRequest
 		} else {
 			status = http.StatusOK
-			userController.database.Model(user).Where("id = ?", id).First(user)
+			userController.database.Model(user).Where("id = ?", id).First(&user)
 		}
 		context.JSON(status, gin.H{
 			"id":      user.Id,
@@ -65,27 +64,27 @@ func (userController *UserController) Get(context *gin.Context) {
 func (userController *UserController) Post(context *gin.Context) {
 	query := context.Request.URL.Query()
 	var user models.User
-	var isUsernameExist bool
+	var users []models.User
 	var status int
 	userController.database.
 		Model(user).
 		Where("username = ?", query.Get("username")).
-		Find(&isUsernameExist)
-	if !isUsernameExist {
+		Find(&users)
+	if len(users) == 0 {
 		user = models.User{
 			Username: query.Get("username"),
 			Name:     query.Get("name"),
 			Surname:  query.Get("surname"),
 			Balance:  0,
 		}
-		userController.database.Create(&user)
+		userController.database.Save(&user)
 		var role models.Role
-		var isRoleExist bool
+		var roles []models.Role
 		userController.database.
 			Model(role).
-			Where("role = ?", query.Get("role")).
-			Find(&isRoleExist)
-		if isRoleExist {
+			Where("key = ?", query.Get("role")).
+			Find(&roles)
+		if len(roles) == 1 {
 			userController.database.Model(&role).Where("key = ?", query.Get("role")).First(&role)
 		} else {
 			userController.database.Model(&role).Where("key = ?", "user").First(&role)
