@@ -18,6 +18,7 @@ import (
 type Host struct {
 	Database          *gorm.DB
 	BalanceController *controllers.BalanceController
+	UserController    *controllers.UserController
 	Router            *Router
 }
 
@@ -52,6 +53,7 @@ func NewHost() *Host {
 
 	host.Database = database
 	host.BalanceController = controllers.NewBalanceController(host.Database)
+	host.UserController = controllers.NewUserController(host.Database)
 	host.Router = NewRouter(
 		gin.Default(),
 		host.BalanceController,
