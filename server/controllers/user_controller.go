@@ -130,7 +130,6 @@ func (userController *UserController) Put(context *gin.Context) {
 	context.JSON(status, gin.H{})
 }
 
-// TODO: вроде как из контекста удаляет, но в БД пользователь остался
 func (userController *UserController) Delete(context *gin.Context) {
 	query := context.Request.URL.Query()
 	var status int
