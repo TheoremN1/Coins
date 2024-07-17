@@ -15,15 +15,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Host struct {
-	Database               *gorm.DB
-	BalanceController      *controllers.BalanceController
-	UserController         *controllers.UserController
-	AchievementsController *controllers.AchievementsController
-	Router                 *Router
-}
-
-func NewHost() *Host {
+func BuildRouter() *Router {
 	confFile, err := os.Open(filepath.Join("configs", "config.json"))
 	if err != nil {
 		panic(err)
@@ -50,19 +42,16 @@ func NewHost() *Host {
 	migrations.MigrationDown(database)
 	migrations.MigrationUp(database)
 
-	host := Host{}
-
-	host.Database = database
-	host.BalanceController = controllers.NewBalanceController(host.Database)
-	host.UserController = controllers.NewUserController(host.Database)
-	host.AchievementsController = controllers.NewAchievementsController(host.Database)
-	host.Router = NewRouter(
+	balanceController := controllers.NewBalanceController(database)
+	userController := controllers.NewUserController(database)
+	achievementsController := controllers.NewAchievementsController(database)
+	router := NewRouter(
 		gin.Default(),
-		host.BalanceController,
-		host.UserController,
-		host.AchievementsController,
+		balanceController,
+		userController,
+		achievementsController,
 		conf.Server.Host+":"+conf.Server.Port,
 	)
 
-	return &host
+	return router
 }
