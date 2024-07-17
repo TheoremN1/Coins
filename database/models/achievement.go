@@ -7,6 +7,6 @@ type Achievement struct {
 	Id           int `gorm:"primaryKey"`
 	Name         string
 	Description  string
-	Prize        int
+	Reward       int
 	CoinRequests []CoinRequest `gorm:"foreignKey:Id"`
 }
