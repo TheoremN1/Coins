@@ -47,8 +47,8 @@ func (userController *UserController) Get(context *gin.Context) {
 	var hash gin.H
 	if id == "" {
 		var users []*models.User
-		hash := gin.H{}
-		userController.database.Find(&users)
+		hash = gin.H{}
+		userController.database.Model(&models.User{}).Find(&users)
 		if len(users) > 0 {
 			status = http.StatusOK
 			for i := 0; i < len(users); i++ {
@@ -139,7 +139,7 @@ func (userController *UserController) Delete(context *gin.Context) {
 		userController.database.
 			Where("id = ?", query.Get("id")).
 			First(&user)
-		userController.database.Delete(user)
+		userController.database.Delete(&user)
 		status = http.StatusOK
 	} else {
 		status = http.StatusBadRequest
