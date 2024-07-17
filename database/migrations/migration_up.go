@@ -29,4 +29,11 @@ func MigrationUp(database *gorm.DB) {
 		{Key: "denied", Name: "Отказано"},
 	}
 	database.Save(&statuses)
+
+	achievements := []*models.Achievement{
+		{Name: "Сотрудник месяца", Description: "Хз, че тут писать", Reward: 10},
+		{Name: "Организация корпоратива", Description: "Абырвалг", Reward: 20},
+		{Name: "Призовое место в конкурсе", Description: "?", Reward: 30},
+	}
+	database.Save(&achievements)
 }
