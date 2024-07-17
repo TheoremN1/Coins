@@ -45,10 +45,12 @@ func BuildRouter() *Router {
 	balanceController := controllers.NewBalanceController(database)
 	userController := controllers.NewUserController(database)
 	achievementsController := controllers.NewAchievementsController(database)
+	requestController := controllers.NewRequestController(database)
 	router := NewRouter(
 		gin.Default(),
 		balanceController,
 		userController,
+		requestController,
 		achievementsController,
 		conf.Server.Host+":"+conf.Server.Port,
 	)

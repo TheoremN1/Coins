@@ -15,6 +15,7 @@ func NewRouter(
 	engine *gin.Engine,
 	balanceController *controllers.BalanceController,
 	userController *controllers.UserController,
+	requestController *controllers.RequestController,
 	achievementsController *controllers.AchievementsController,
 	url string,
 ) *Router {
@@ -28,6 +29,10 @@ func NewRouter(
 	router.engine.POST("/users", userController.Post)
 	router.engine.PUT("/users", userController.Put)
 	router.engine.DELETE("/users", userController.Delete)
+
+	router.engine.GET("/requests", requestController.Get)
+	router.engine.POST("/requests", requestController.Post)
+	router.engine.DELETE("/requests", requestController.Delete)
 
 	router.engine.GET("/achievements", achievementsController.Get)
 
