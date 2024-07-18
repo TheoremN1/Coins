@@ -9,6 +9,7 @@ import (
 	"github.com/TheoremN1/Coins/configs"
 	"github.com/TheoremN1/Coins/database/migrations"
 	"github.com/TheoremN1/Coins/server/controllers"
+	"github.com/TheoremN1/Coins/server/services"
 	"github.com/gin-gonic/gin"
 
 	"gorm.io/driver/postgres"
@@ -16,6 +17,7 @@ import (
 )
 
 func BuildRouter() *Router {
+	// Configs
 	confFile, err := os.Open(filepath.Join("configs", "config.json"))
 	if err != nil {
 		panic(err)
@@ -31,6 +33,7 @@ func BuildRouter() *Router {
 		panic(err)
 	}
 
+	// Database
 	stringConnection := "host=" + conf.Database.Host +
 		" user=" + conf.Database.Username +
 		" dbname=" + conf.Database.Name +
@@ -42,10 +45,17 @@ func BuildRouter() *Router {
 	migrations.MigrationDown(database)
 	migrations.MigrationUp(database)
 
+	// Services
+	rolesService := services.NewRolesService(database)
+	usersService := services.NewUsersService(database, rolesService)
+
+	// Controllers
 	balanceController := controllers.NewBalanceController(database)
-	userController := controllers.NewUserController(database)
+	userController := controllers.NewUserController(usersService)
 	achievementsController := controllers.NewAchievementsController(database)
-	requestController := controllers.NewRequestController(database)
+	requestController := controllers.NewRequestController(database, usersService)
+
+	// Router
 	router := NewRouter(
 		gin.Default(),
 		balanceController,
