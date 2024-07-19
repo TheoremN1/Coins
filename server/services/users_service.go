@@ -1,6 +1,8 @@
 package services
 
 import (
+	"fmt"
+
 	"github.com/TheoremN1/Coins/database/models"
 	"gorm.io/gorm"
 )
@@ -58,11 +60,13 @@ func (usersService *UsersService) NewUser(username string, name string, surname 
 			Surname:  surname,
 			Balance:  0,
 		}
+		usersService.database.Save(&user)
 		if usersService.SetRole(user.Id, roleKey) {
-			usersService.database.Save(&user)
 			return true, user.Id
 		}
+		usersService.DeleteUser(user.Id)
 	}
+	fmt.Printf("UsernameExist: %t\nRoleExist: %t\n", usersService.IsUsernameExist(username), usersService.rolesService.IsRoleExist(roleKey))
 	return false, -1
 }
 
@@ -108,5 +112,6 @@ func (usersService *UsersService) SetRole(userId int, roleKey string) bool {
 			return true
 		}
 	}
+	fmt.Printf("UserExist: %t\nRoleExist: %t\n", usersService.IsUserExist(userId), usersService.rolesService.IsRoleExist(roleKey))
 	return false
 }
