@@ -10,6 +10,11 @@
   }
   
 
+
+  .achievement {
+    display: flex;
+
+  }
   
   .achievement-option {
     text-align: left;

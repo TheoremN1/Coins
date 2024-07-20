@@ -21,11 +21,11 @@ const Header = ({ title }) => {
     //   }
     // };
 
-      fetch('https://simplbot.onrender.com/api/getBalance')
-        .then((res) => res.json())
-        .then((data) => {
-          setBalance(data.balance);
-      })
+      // fetch('https://simplbot.onrender.com/api/getBalance')
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     setBalance(data.balance);
+      // })
 
 
     
