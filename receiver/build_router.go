@@ -1,4 +1,4 @@
-package server
+package receiver
 
 import (
 	"encoding/json"
@@ -6,10 +6,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/TheoremN1/Coins/configs"
-	"github.com/TheoremN1/Coins/database/migrations"
-	"github.com/TheoremN1/Coins/server/controllers"
-	"github.com/TheoremN1/Coins/server/services"
+	"github.com/TheoremN1/Coins/receiver/configs"
+	"github.com/TheoremN1/Coins/receiver/controllers"
+	"github.com/TheoremN1/Coins/receiver/database/migrations"
+	"github.com/TheoremN1/Coins/receiver/services"
 	"github.com/gin-gonic/gin"
 
 	"gorm.io/driver/postgres"

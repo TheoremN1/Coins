@@ -1,4 +1,4 @@
-module github.com/TheoremN1/Coins
+module github.com/TheoremN1/Coins/receiver
 
 go 1.22.5
 

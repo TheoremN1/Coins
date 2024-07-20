@@ -1,7 +1,7 @@
 package migrations
 
 import (
-	"github.com/TheoremN1/Coins/database/models"
+	"github.com/TheoremN1/Coins/receiver/database/models"
 	"gorm.io/gorm"
 )
 

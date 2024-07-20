@@ -1,7 +1,7 @@
-package server
+package receiver
 
 import (
-	"github.com/TheoremN1/Coins/server/controllers"
+	"github.com/TheoremN1/Coins/receiver/controllers"
 
 	"github.com/gin-gonic/gin"
 )

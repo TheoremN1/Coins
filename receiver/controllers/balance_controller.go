@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/TheoremN1/Coins/database/models"
+	"github.com/TheoremN1/Coins/receiver/database/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
