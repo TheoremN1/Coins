@@ -7,20 +7,17 @@ import (
 	"path/filepath"
 
 	"github.com/TheoremN1/Coins/configs"
+	"github.com/TheoremN1/Coins/database/migrations"
 	"github.com/TheoremN1/Coins/server/controllers"
+	"github.com/TheoremN1/Coins/server/services"
 	"github.com/gin-gonic/gin"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-type Host struct {
-	Database         *gorm.DB
-	IndexController  *controllers.IndexController
-	HealthController *controllers.HealthController
-	Router           *Router
-}
-
-func NewHost() *Host {
+func BuildRouter() *Router {
+	// Configs
 	confFile, err := os.Open(filepath.Join("configs", "config.json"))
 	if err != nil {
 		panic(err)
@@ -36,28 +33,37 @@ func NewHost() *Host {
 		panic(err)
 	}
 
+	// Database
 	stringConnection := "host=" + conf.Database.Host +
 		" user=" + conf.Database.Username +
 		" dbname=" + conf.Database.Name +
 		" password=" + conf.Database.Password
-
 	database, err := gorm.Open(postgres.Open(stringConnection), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
+	migrations.MigrationDown(database)
+	migrations.MigrationUp(database)
 
-	host := Host{}
-	host.Database = database
+	// Services
+	rolesService := services.NewRolesService(database)
+	usersService := services.NewUsersService(database, rolesService)
 
-	host.IndexController = controllers.NewIndexController()
-	host.HealthController = controllers.NewHealthController()
+	// Controllers
+	balanceController := controllers.NewBalanceController(database)
+	userController := controllers.NewUserController(usersService)
+	achievementsController := controllers.NewAchievementsController(database)
+	requestController := controllers.NewRequestController(database, usersService)
 
-	host.Router = NewRouter(
+	// Router
+	router := NewRouter(
 		gin.Default(),
-		host.IndexController,
-		host.HealthController,
+		balanceController,
+		userController,
+		requestController,
+		achievementsController,
 		conf.Server.Host+":"+conf.Server.Port,
 	)
 
-	return &host
+	return router
 }

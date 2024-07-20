@@ -13,13 +13,29 @@ type Router struct {
 
 func NewRouter(
 	engine *gin.Engine,
-	indexController *controllers.IndexController,
-	healthController *controllers.HealthController,
+	balanceController *controllers.BalanceController,
+	userController *controllers.UserController,
+	requestController *controllers.RequestController,
+	achievementsController *controllers.AchievementsController,
 	url string,
 ) *Router {
+
 	router := Router{engine, url}
-	router.engine.GET("/", indexController.Get)
-	router.engine.GET("/check", healthController.Get)
+
+	router.engine.GET("/balance", balanceController.Get)
+	router.engine.PUT("/balance", balanceController.Put)
+
+	router.engine.GET("/users", userController.Get)
+	router.engine.POST("/users", userController.Post)
+	router.engine.PUT("/users", userController.Put)
+	router.engine.DELETE("/users", userController.Delete)
+
+	router.engine.GET("/requests", requestController.Get)
+	router.engine.POST("/requests", requestController.Post)
+	router.engine.DELETE("/requests", requestController.Delete)
+
+	router.engine.GET("/achievements", achievementsController.Get)
+
 	return &router
 }
 

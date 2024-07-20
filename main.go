@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-	host := server.NewHost()
-	router := host.Router
+	router := server.BuildRouter()
 	router.Run()
 }
