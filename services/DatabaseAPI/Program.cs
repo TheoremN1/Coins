@@ -64,7 +64,16 @@ public class Program
             }
         };
         // TODO: \/ При релизе убрать \/
-        context.Users.Add(new User(){ Name = "Ivan", Surname = "Pupkin", Login = "rockstar13", Password = "qwerty", RoleKey = "admin" });
+		// Эти данные нужны только для теста контроллеров
+        context.Users.Add(new User(){ 
+			Name = "Ivan", Surname = "Pupkin", 
+			Login = "rockstar13", Password = "qwerty", 
+			RoleKey = "admin" });
+        context.Achievements.Add(new Achievement() { 
+			Name = "Сотрудник месяца", 
+			Description = "Вы стали лучшим сотрудником в этом месяце? Поздравляем! :)",
+			Reward = 10
+		});
         //		 /\ При релизе убрать /\
         context.SaveChanges();
 
