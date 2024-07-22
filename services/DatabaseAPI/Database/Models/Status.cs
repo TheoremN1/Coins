@@ -2,10 +2,10 @@
 
 namespace DatabaseAPI.Database.Models;
 
-public class Status(string key, string name)
+public class Status
 {
 	[Key]
-	public string Key { get; set; } = key;
-	[Required]
-	public string Name { get; set; } = name;
+	public string Key { get; set; }
+
+	public string Name { get; set; }
 }

@@ -3,29 +3,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DatabaseAPI.Database.Models;
 
-public class User(string name, string surname, string login, string password, string roleKey)
+public class User
 {
-	[Key]
+	/*
+    public User(string name, string surname, string login, string password, string roleKey)
+    {
+        Name = name;
+		Surname = surname;
+		Login = login;
+		Password = password;
+		RoleKey = roleKey;
+    }
+	*/
+
+    [Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public int Id { get; set; }
 
-	[Required]
-	public string Name { get; set; } = name;
+	public string Name { get; set; }
 
-	[Required]
-	public string Surname { get; set; } = surname;
+	public string Surname { get; set; }
+	public int Balance { get; set; }
 
-	public int Balance { get; set; } = 0;
+	public string Login { get; set; }
 
-	[Required]
-	public string Login { get; set; } = login;
+	public string Password { get; set; }
 
-	[Required]
-	public string Password { get; set; } = password;
-
-	[Required]
-	public string RoleKey { get; set; } = roleKey;
+	public string RoleKey { get; set; }
 
 	[ForeignKey(nameof(RoleKey))]
-	public Role Role { get; set; }
+	public Role? Role { get; set; }
 }

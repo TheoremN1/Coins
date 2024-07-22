@@ -9,32 +9,28 @@ public class MerchRequest
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public int Id { get; set; }
 
-	[Required]
 	public int UserId { get; set; }
 
-	[Required]
 	public string UserMessage { get; set; }
 
 	public int? HrId { get; set; }
 
 	public string? HrMessage { get; set; }
 
-	[Required]
 	public int MerchId { get; set; }
 
-	[Required]
 	public string StatusKey { get; set; }
 
 
 	[ForeignKey(nameof(UserId))]
-	public User User { get; set; }
+	public User? User { get; set; }
 
 	[ForeignKey(nameof(HrId))]
 	public User? Hr { get; set; }
 
 	[ForeignKey(nameof(MerchId))]
-	public Merch Merch { get; set; }
+	public Merch? Merch { get; set; }
 
 	[ForeignKey(nameof(StatusKey))]
-	public Status Status { get; set; }
+	public Status? Status { get; set; }
 }

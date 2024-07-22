@@ -2,10 +2,10 @@
 
 namespace DatabaseAPI.Database.Models;
 
-public class Role(string key, string name)
+public class Role
 {
 	[Key]
-	public string Key { get; set; } = key;
-	[Required]
-	public string Name { get; set; } = name;
+	public string Key { get; set; }
+
+	public string Name { get; set; }
 }
