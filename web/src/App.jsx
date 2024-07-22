@@ -2,8 +2,8 @@
 import './App.css';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainPage from './components/MainPage/MainPage.jsx';
-import CreateRequestPage from './components/CreateRequestPage/CreateRequestPage.jsx';
+import MainPage from './pages/MainPage/MainPage.jsx';
+import CreateRequestPage from './pages/CreateRequestPage/CreateRequestPage.jsx';
 function App() {
 
 useEffect (()=> {
