@@ -72,8 +72,14 @@ public class Program
         context.Achievements.Add(new Achievement() { 
 			Name = "Сотрудник месяца", 
 			Description = "Вы стали лучшим сотрудником в этом месяце? Поздравляем! :)",
-			Reward = 10
+			Reward = 30
 		});
+        context.Merches.Add(new Merch()
+        {
+            Name = "Рюкзак",
+            Description = "Цвет: Черный, Объем: 30л",
+            Price = 20
+        });
         //		 /\ При релизе убрать /\
         context.SaveChanges();
 
