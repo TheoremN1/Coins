@@ -5,9 +5,11 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/TheoremN1/Coins/UsersService/configs"
 	"github.com/TheoremN1/Coins/UsersService/controllers"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,21 +24,34 @@ func NewRouter() *Router {
 	bytes, _ := io.ReadAll(confFile)
 	configuration := configs.ServerConfiguration{}
 	json.Unmarshal(bytes, &configuration)
+	url := configuration.Host + ":" + configuration.Port
+
+	engine := gin.Default()
+	engine.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://" + url},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		/*
+			AllowOriginFunc: func(origin string) bool {
+				return origin == <URL на ReactApp>
+			},
+		*/
+		MaxAge: 12 * time.Hour,
+	}))
+
+	userController := controllers.NewUserController()
+	engine.GET("/users", userController.Get)
+	engine.POST("/users", userController.Post)
+	engine.PUT("/users", userController.Put)
+	engine.DELETE("/users", userController.Delete)
 
 	balanceController := controllers.NewBalanceController()
-	userController := controllers.NewUserController()
+	engine.GET("/balance", balanceController.Get)
+	engine.PUT("/balance", balanceController.Put)
 
-	router := Router{gin.Default(), configuration.Host + ":" + configuration.Port}
-
-	router.engine.GET("/balance", balanceController.Get)
-	router.engine.PUT("/balance", balanceController.Put)
-
-	router.engine.GET("/users", userController.Get)
-	router.engine.POST("/users", userController.Post)
-	router.engine.PUT("/users", userController.Put)
-	router.engine.DELETE("/users", userController.Delete)
-
-	return &router
+	return &Router{engine, url}
 }
 
 func (router *Router) Run() {
