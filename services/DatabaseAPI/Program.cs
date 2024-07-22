@@ -48,7 +48,7 @@ public class Program
 			{
 				if (item is null)
 					throw new NullReferenceException("Что-то не так с файлом roles.json");
-				context.Roles.Add(new Role(item["key"], item["name"]));
+				context.Roles.Add(new Role() { Key = item["key"], Name = item["name"] });
 			}
 		};
         using (var streamReader = new StreamReader(Path.Join("Configs", "statuses.json")))
@@ -60,10 +60,13 @@ public class Program
             {
                 if (item is null)
                     throw new NullReferenceException("Что-то не так с файлом statuses.json");
-                context.Statuses.Add(new Status(item["key"], item["name"]));
+                context.Statuses.Add(new Status() { Key = item["key"], Name = item["name"] });
             }
         };
-		context.SaveChanges();
+        // TODO: \/ При релизе убрать \/
+        context.Users.Add(new User(){ Name = "Ivan", Surname = "Pupkin", Login = "rockstar13", Password = "qwerty", RoleKey = "admin" });
+        //		 /\ При релизе убрать /\
+        context.SaveChanges();
 
 		app.UseAuthorization();
 		app.MapControllers();
