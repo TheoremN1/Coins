@@ -1,40 +1,70 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DatabaseAPI.Database;
+using DatabaseAPI.Database.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MerchRequestsController : ControllerBase
+public class MerchRequestsController(DatabaseContext context) : ControllerBase
 {
+    private readonly DatabaseContext _context = context;
+
     // GET: api/<MerchRequestsController>
     [HttpGet]
-    public IEnumerable<string> Get()
+    public IEnumerable<MerchRequest> Get()
     {
-        return new string[] { "value1", "value2" };
+        return _context.MerchRequests;
     }
 
     // GET api/<MerchRequestsController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<MerchRequest?> Get(int id)
     {
-        return "value";
+        return await _context.MerchRequests.FirstOrDefaultAsync(mr => mr.Id == id);
     }
 
     // POST api/<MerchRequestsController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<bool> Post([FromForm] MerchRequest merchRequest)
     {
+        if (await _context.MerchRequests.AnyAsync(mr => mr.Id == merchRequest.Id))
+            return false;
+
+        await _context.MerchRequests.AddAsync(merchRequest);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     // PUT api/<MerchRequestsController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public async Task<bool> Put(int id, [FromForm] MerchRequest newMerchRequest)
     {
+        var oldMerchRequest = await _context.MerchRequests.FirstOrDefaultAsync(cr => cr.Id == id);
+        if (oldMerchRequest is null)
+            return false;
+
+        oldMerchRequest.UserMessage = newMerchRequest.UserMessage;
+        oldMerchRequest.HrId = newMerchRequest.HrId;
+        oldMerchRequest.HrMessage = newMerchRequest.HrMessage;
+        oldMerchRequest.MerchId = newMerchRequest.MerchId;
+        oldMerchRequest.StatusKey = newMerchRequest.StatusKey;
+
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     // DELETE api/<MerchRequestsController>/5
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public async Task<bool> Delete(int id)
     {
+        var coinsRequest = await _context.CoinsRequests.FirstOrDefaultAsync(cr => cr.Id == id);
+        if (coinsRequest is null)
+            return false;
+
+        _context.CoinsRequests.Remove(coinsRequest);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

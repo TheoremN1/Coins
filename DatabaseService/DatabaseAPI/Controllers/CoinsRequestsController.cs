@@ -1,43 +1,71 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DatabaseAPI.Database;
+using DatabaseAPI.Database.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+namespace DatabaseAPI.Controllers;
 
-namespace DatabaseAPI.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class CoinsRequestsController(DatabaseContext context) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CoinsRequestsController : ControllerBase
-    {
-        // GET: api/<CoinsRequestsController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+    private readonly DatabaseContext _context = context;
 
-        // GET api/<CoinsRequestsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+    // GET: api/<CoinsRequestsController>
+    [HttpGet]
+	public IEnumerable<CoinsRequest> Get()
+	{
+		return _context.CoinsRequests;
+	}
 
-        // POST api/<CoinsRequestsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+	// GET api/<CoinsRequestsController>/5
+	[HttpGet("{id}")]
+	public async Task<CoinsRequest?> Get(int id)
+	{
+		return await _context.CoinsRequests.FirstOrDefaultAsync(cr => cr.Id == id);
+	}
 
-        // PUT api/<CoinsRequestsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+	// POST api/<CoinsRequestsController>
+	[HttpPost]
+	public async Task<bool> Post([FromForm] CoinsRequest coinsRequest)
+	{
+        if (await _context.CoinsRequests.AnyAsync(cr => cr.Id == coinsRequest.Id))
+            return false;
 
-        // DELETE api/<CoinsRequestsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        await _context.CoinsRequests.AddAsync(coinsRequest);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+	// PUT api/<CoinsRequestsController>/5
+	[HttpPut("{id}")]
+	public async Task<bool> Put(int id, [FromForm] CoinsRequest newCoinsRequest)
+	{
+        var oldCoinsRequest = await _context.CoinsRequests.FirstOrDefaultAsync(cr => cr.Id == id);
+        if (oldCoinsRequest is null)
+            return false;
+
+        oldCoinsRequest.UserMessage = newCoinsRequest.UserMessage;
+        oldCoinsRequest.HrId = newCoinsRequest.HrId;
+        oldCoinsRequest.HrMessage = newCoinsRequest.HrMessage;
+        oldCoinsRequest.AchievementId = newCoinsRequest.AchievementId;
+        oldCoinsRequest.StatusKey = newCoinsRequest.StatusKey;
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+	// DELETE api/<CoinsRequestsController>/5
+	[HttpDelete("{id}")]
+	public async Task<bool> Delete(int id)
+	{
+        var coinsRequest = await _context.CoinsRequests.FirstOrDefaultAsync(cr => cr.Id == id);
+        if (coinsRequest is null)
+            return false;
+
+        _context.CoinsRequests.Remove(coinsRequest);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }
