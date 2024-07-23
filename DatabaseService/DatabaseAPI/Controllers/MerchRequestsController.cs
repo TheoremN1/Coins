@@ -4,35 +4,35 @@ namespace DatabaseAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class RequestsController : ControllerBase
+public class MerchRequestsController : ControllerBase
 {
-    // GET: api/<RequestsController>
+    // GET: api/<MerchRequestsController>
     [HttpGet]
     public IEnumerable<string> Get()
     {
         return new string[] { "value1", "value2" };
     }
 
-    // GET api/<RequestsController>/5
+    // GET api/<MerchRequestsController>/5
     [HttpGet("{id}")]
     public string Get(int id)
     {
         return "value";
     }
 
-    // POST api/<RequestsController>
+    // POST api/<MerchRequestsController>
     [HttpPost]
     public void Post([FromBody] string value)
     {
     }
 
-    // PUT api/<RequestsController>/5
+    // PUT api/<MerchRequestsController>/5
     [HttpPut("{id}")]
     public void Put(int id, [FromBody] string value)
     {
     }
 
-    // DELETE api/<RequestsController>/5
+    // DELETE api/<MerchRequestsController>/5
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
