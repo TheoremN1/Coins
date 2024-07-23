@@ -5,18 +5,7 @@ namespace DatabaseAPI.Database.Models;
 
 public class User
 {
-	/*
-    public User(string name, string surname, string login, string password, string roleKey)
-    {
-        Name = name;
-		Surname = surname;
-		Login = login;
-		Password = password;
-		RoleKey = roleKey;
-    }
-	*/
-
-    [Key]
+	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public int Id { get; set; }
 
