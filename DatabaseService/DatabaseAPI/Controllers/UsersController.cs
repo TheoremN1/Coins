@@ -25,8 +25,16 @@ public class UsersController(DatabaseContext context) : ControllerBase
 		return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 	}
 
-	// POST api/<UsersController>
-	[HttpPost]
+    // GET api/<UsersController>/5/role
+    [HttpGet("{id}/role")]
+    public async Task<Role?> GetRole(int id)
+    {
+        var user = await Get(id);
+        return user?.Role;
+    }
+
+    // POST api/<UsersController>
+    [HttpPost]
 	public async Task<bool> Post([FromForm] User user)
 	{
 		if (await _context.Users.AnyAsync(u => u.Login == user.Login || u.Id == user.Id))

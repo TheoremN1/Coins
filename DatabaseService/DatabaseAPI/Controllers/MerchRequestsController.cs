@@ -25,6 +25,38 @@ public class MerchRequestsController(DatabaseContext context) : ControllerBase
         return await _context.MerchRequests.FirstOrDefaultAsync(mr => mr.Id == id);
     }
 
+    // GET api/<MerchRequestsController>/5/user
+    [HttpGet("{id}/user")]
+    public async Task<User?> GetUser(int id)
+    {
+        var merchRequest = await Get(id);
+        return merchRequest?.User;
+    }
+
+    // GET api/<MerchRequestsController>/5/hr
+    [HttpGet("{id}/hr")]
+    public async Task<User?> GetHr(int id)
+    {
+        var merchRequest = await Get(id);
+        return merchRequest?.Hr;
+    }
+
+    // GET api/<MerchRequestsController>/5/merch
+    [HttpGet("{id}/merch")]
+    public async Task<Merch?> GetMerch(int id)
+    {
+        var merchRequest = await Get(id);
+        return merchRequest?.Merch;
+    }
+
+    // GET api/<MerchRequestsController>/5/status
+    [HttpGet("{id}/status")]
+    public async Task<Status?> GetStatus(int id)
+    {
+        var merchRequest = await Get(id);
+        return merchRequest?.Status;
+    }
+
     // POST api/<MerchRequestsController>
     [HttpPost]
     public async Task<bool> Post([FromForm] MerchRequest merchRequest)

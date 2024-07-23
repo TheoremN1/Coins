@@ -26,8 +26,40 @@ public class CoinsRequestsController(DatabaseContext context) : ControllerBase
 		return await _context.CoinsRequests.FirstOrDefaultAsync(cr => cr.Id == id);
 	}
 
-	// POST api/<CoinsRequestsController>
-	[HttpPost]
+    // GET api/<CoinsRequestsController>/5/user
+    [HttpGet("{id}/user")]
+    public async Task<User?> GetUser(int id)
+    {
+        var coinsRequest = await Get(id);
+        return coinsRequest?.User;
+    }
+
+    // GET api/<CoinsRequestsController>/5/hr
+    [HttpGet("{id}/hr")]
+    public async Task<User?> GetHr(int id)
+    {
+        var coinsRequest = await Get(id);
+        return coinsRequest?.Hr;
+    }
+
+    // GET api/<CoinsRequestsController>/5/achievement
+    [HttpGet("{id}/achievement")]
+    public async Task<Achievement?> GetMerch(int id)
+    {
+        var coinsRequest = await Get(id);
+        return coinsRequest?.Achievement;
+    }
+
+    // GET api/<CoinsRequestsController>/5/status
+    [HttpGet("{id}/status")]
+    public async Task<Status?> GetStatus(int id)
+    {
+        var coinsRequest = await Get(id);
+        return coinsRequest?.Status;
+    }
+
+    // POST api/<CoinsRequestsController>
+    [HttpPost]
 	public async Task<bool> Post([FromForm] CoinsRequest coinsRequest)
 	{
         if (await _context.CoinsRequests.AnyAsync(cr => cr.Id == coinsRequest.Id))
