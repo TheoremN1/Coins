@@ -25,6 +25,6 @@ public class User
 
     public override string ToString()
     {
-        return $"{Name}, {Surname}, {Login}, {RoleKey}";
+        return $"{Id}, {Name}, {Surname}, {Balance}, {Login}, {RoleKey}.";
     }
 }

@@ -16,20 +16,23 @@ public class UsersController(DatabaseContext context, ILogger<UsersController> l
 	[HttpGet]
 	public IEnumerable<User> Get()
 	{
-		return _context.Users;
+        _logger.LogInformation($"GET /api/users");
+        return _context.Users;
 	}
 
 	// GET api/<UsersController>/5
 	[HttpGet("{id}")]
 	public async Task<User?> Get(int id)
 	{
-		return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        _logger.LogInformation($"GET /api/users/{id}");
+        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 	}
 
     // GET api/<UsersController>/5/role
     [HttpGet("{id}/role")]
     public async Task<Role?> GetRole(int id)
     {
+        _logger.LogInformation($"GET /api/users/{id}/role");
         var user = await Get(id);
         return user?.Role;
     }
@@ -38,7 +41,7 @@ public class UsersController(DatabaseContext context, ILogger<UsersController> l
     [HttpPost]
 	public async Task<bool> Post([FromForm] User user)
 	{
-		_logger.LogInformation($"POST /api/users {user}");
+		_logger.LogInformation($"POST /api/users Data: {user}");
 
 		if (await _context.Users.AnyAsync(u => u.Login == user.Login || u.Id == user.Id))
 			return false;
@@ -52,13 +55,11 @@ public class UsersController(DatabaseContext context, ILogger<UsersController> l
 	[HttpPut("{id}")]
 	public async Task<bool> Put(int id, [FromForm] User newUser)
 	{
-        _logger.LogInformation($"PUT /api/users NewData: {newUser}");
-
         var oldUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (oldUser is null)
 			return false;
 
-        _logger.LogInformation($"PUT /api/users OldData: {newUser}");
+        _logger.LogInformation($"PUT /api/users \nOldData: {newUser}\nNewData: {newUser}");
 
         if (await _context.Users.AnyAsync(u => u.Login == newUser.Login && u.Id != id))
 			return false;
@@ -78,7 +79,9 @@ public class UsersController(DatabaseContext context, ILogger<UsersController> l
 	[HttpDelete("{id}")]
 	public async Task<bool> Delete(int id)
 	{
-		var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        _logger.LogInformation($"DELETE /api/users/{id}");
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user is null)
 			return false;
 
