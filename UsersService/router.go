@@ -8,6 +8,7 @@ import (
 
 	"github.com/TheoremN1/Coins/UsersService/configs"
 	"github.com/TheoremN1/Coins/UsersService/controllers"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,20 +29,13 @@ func GetUrl(jsonPath string) string {
 func NewRouter() *Router {
 	serverUrl := GetUrl(filepath.Join("configs", "server.json"))
 	databaseUrl := GetUrl(filepath.Join("configs", "database.json"))
+	reactUrl := GetUrl(filepath.Join("configs", "react.json"))
 
 	engine := gin.Default()
-	/*
-		engine.Use(cors.New(cors.Config{
-			AllowOrigins:     []string{"http://" + serverUrl},
-			AllowCredentials: true,
-			/*
-				AllowOriginFunc: func(origin string) bool {
-					return origin == <URL на ReactApp>
-				},
-			/
-			MaxAge: 12 * time.Hour,
-		}))
-	*/
+	engine.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://" + reactUrl},
+	}))
+
 	userController := controllers.NewUserController("http://" + databaseUrl)
 	engine.GET("/api/users", userController.Get)
 	engine.POST("/api/users", userController.Post)
