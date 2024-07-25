@@ -49,9 +49,7 @@ func (balanceController *BalanceController) Put(context *gin.Context) {
 		default:
 			panic("Unexpected action: " + action)
 		}
-
 		isPuted, status := EditUser(url, user)
-
 		context.JSON(status, isPuted)
 	}
 }
