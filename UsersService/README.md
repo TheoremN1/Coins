@@ -8,6 +8,7 @@ http://localhost:9004/api/users?id=1
 
 POST
 http://localhost:9004/api/users
+
 {
   "name": "Maxim",
   "surname": "Bolovin",
@@ -18,6 +19,7 @@ http://localhost:9004/api/users
 
 PUT
 http://localhost:9004/api/users
+
 {
   "id": 1,
   "name": "Maxim",
