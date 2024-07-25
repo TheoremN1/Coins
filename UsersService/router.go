@@ -52,6 +52,10 @@ func NewRouter() *Router {
 	engine.GET("/api/balance", balanceController.Get)
 	engine.PUT("/api/balance", balanceController.Put)
 
+	roleController := controllers.NewRoleController("http://" + databaseUrl)
+	engine.GET("/api/role", roleController.Get)
+	engine.PUT("/api/role", roleController.Put)
+
 	return &Router{engine, serverUrl}
 }
 
