@@ -1,12 +1,8 @@
 package controllers
 
 import (
-	"encoding/json"
-	"net/http"
 	"strconv"
 
-	"github.com/TheoremN1/Coins/UsersService/models"
-	"github.com/dghubble/sling"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,21 +19,10 @@ func (balanceController *BalanceController) Get(context *gin.Context) {
 	id := query.Get("id")
 
 	url := balanceController.databaseUrl + "/api/users/" + id
-	client := &http.Client{}
-	req, err := sling.New().Get(url).Request()
-	if err != nil {
-		panic(err)
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
 
-	var user *models.User
-	json.NewDecoder(resp.Body).Decode(&user)
+	user, status := GetUser(url)
 
-	context.JSON(resp.StatusCode, user.Balance)
+	context.JSON(status, user.Balance)
 }
 
 func (balanceController *BalanceController) Put(context *gin.Context) {
@@ -50,22 +35,11 @@ func (balanceController *BalanceController) Put(context *gin.Context) {
 	}
 
 	url := balanceController.databaseUrl + "/api/users/" + id
-	client := &http.Client{}
-	req, err := sling.New().Get(url).Request()
-	if err != nil {
-		panic(err)
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
 
-	var user *models.User
-	json.NewDecoder(resp.Body).Decode(&user)
+	user, status := GetUser(url)
 
 	if user == nil {
-		context.JSON(resp.StatusCode, false)
+		context.JSON(status, false)
 	} else {
 		switch action {
 		case "plus":
@@ -76,16 +50,8 @@ func (balanceController *BalanceController) Put(context *gin.Context) {
 			panic("Unexpected action: " + action)
 		}
 
-		req, err := sling.New().Put(url).BodyForm(user).Request()
-		if err != nil {
-			panic(err)
-		}
-		resp, err := client.Do(req)
-		if err != nil {
-			panic(err)
-		}
-		defer resp.Body.Close()
+		isPuted, status := EditUser(url, user)
 
-		context.JSON(resp.StatusCode, true)
+		context.JSON(status, isPuted)
 	}
 }

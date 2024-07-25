@@ -18,11 +18,7 @@ func NewUserController(databaseUrl string) *UserController {
 	return &UserController{databaseUrl}
 }
 
-func (userController *UserController) Get(context *gin.Context) {
-	query := context.Request.URL.Query()
-	id := query.Get("id")
-
-	url := userController.databaseUrl + "/api/users/" + id
+func GetUser(url string) (*models.User, int) {
 	client := &http.Client{}
 	req, err := sling.New().Get(url).Request()
 	if err != nil {
@@ -36,8 +32,18 @@ func (userController *UserController) Get(context *gin.Context) {
 
 	var user *models.User
 	json.NewDecoder(resp.Body).Decode(&user)
+	return user, resp.StatusCode
+}
 
-	context.JSON(resp.StatusCode, user)
+func (userController *UserController) Get(context *gin.Context) {
+	query := context.Request.URL.Query()
+	id := query.Get("id")
+
+	url := userController.databaseUrl + "/api/users/" + id
+
+	user, status := GetUser(url)
+
+	context.JSON(status, user)
 }
 
 func (userController *UserController) Post(context *gin.Context) {
@@ -62,11 +68,7 @@ func (userController *UserController) Post(context *gin.Context) {
 	context.JSON(resp.StatusCode, isPosted)
 }
 
-func (userController *UserController) Put(context *gin.Context) {
-	var user *models.User
-	json.NewDecoder(context.Request.Body).Decode(&user)
-
-	url := userController.databaseUrl + "/api/users/" + strconv.Itoa(user.Id)
+func EditUser(url string, user *models.User) (bool, int) {
 	client := &http.Client{}
 	req, err := sling.New().Put(url).BodyForm(user).Request()
 	if err != nil {
@@ -81,7 +83,18 @@ func (userController *UserController) Put(context *gin.Context) {
 	var isPuted bool
 	json.NewDecoder(resp.Body).Decode(&isPuted)
 
-	context.JSON(resp.StatusCode, isPuted)
+	return isPuted, resp.StatusCode
+}
+
+func (userController *UserController) Put(context *gin.Context) {
+	var user *models.User
+	json.NewDecoder(context.Request.Body).Decode(&user)
+
+	url := userController.databaseUrl + "/api/users/" + strconv.Itoa(user.Id)
+
+	isPuted, status := EditUser(url, user)
+
+	context.JSON(status, isPuted)
 }
 
 func (userController *UserController) Delete(context *gin.Context) {
