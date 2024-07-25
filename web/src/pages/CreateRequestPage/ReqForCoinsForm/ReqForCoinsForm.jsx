@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './ReqForCoinsForm.css';
 
+
+//TODO: переписать подстановку данных о заявках под текущий сервер
+
+
 const ReqForCoinsForm = ({ selectedAchievement, onAchievementChange}) => {
   const [achievements, setAchievements] = useState([]);
-  // const [selectedAchievement, setSelectedAchievement] = useState('');
-  // const [comment, setComment] = useState('');
+
   // const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
 
   
@@ -14,7 +17,7 @@ const ReqForCoinsForm = ({ selectedAchievement, onAchievementChange}) => {
     // Fetch achievements from the backend
     const fetchAchievements = async () => {
       try {
-        const response = await fetch('https://simplbot.onrender.com/api/getAchievements');
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/achievements');
         const data = await response.json();
         setAchievements(data);
       } catch (error) {
@@ -26,64 +29,6 @@ const ReqForCoinsForm = ({ selectedAchievement, onAchievementChange}) => {
   }, []);
 
 
-  // useEffect(() => {
-  //   // Update the main button state based on form completeness
-
-
-  //   if (selectedAchievement && comment) {
-
-  //   } else {
-
-  //   }
-  // }, [selectedAchievement, comment]);
-
-
-
-
-  // const handleAchievementChange = (event) => {
-  //   setSelectedAchievement(event.target.value);
-  // };
-
-  // const handleCommentChange = (event) => {
-  //   setComment(event.target.value);
-  // };
-
-
-  // const handleSubmit = async (event) => {
-  //   if (!isReadyToSubmit) return;
-
-  //   const CoinReq = {
-  //     id_user: tg.initDataUnsafe?.user.id,
-  //     id_achievement: selectedAchievement,
-  //     comment_hr: '1',
-  //     comment_s: comment,
-  //     id_status: 1
-  //   };
-    
-  //   alert (CoinReq)
-  //   // try {
-  //   //   const response = await fetch('https://simplbot.onrender.com/api/submitCoinRequest', {
-  //   //     method: 'POST',
-  //   //     headers: {
-  //   //       'Content-Type': 'application/json',
-  //   //     },
-  //   //     body: JSON.stringify(CoinReq),
-  //   //   });
-
-  //   //   if (response.ok) {
-  //   //     console.log('Application submitted successfully');
-
-  //   //   } else {
-  //   //     console.error('Failed to submit application');
-  //   //   }
-  //   // } catch (error) {
-  //   //   console.error('Error submitting application:', error);
-  //   // }
-
-  //   navigate('/');
-  
-
-  // };
 
   // useEffect(() => {
   //   //Действие после прогрузки страницы и заполнения формы

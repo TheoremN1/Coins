@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../Header/Header';
-import Button from '../Button/Button';
-import ToggleButton from '../ToggleButton/ToggleButton';
+import Header from '../../components/Header/Header';
+import Button from '../../components/Button/Button';
+import ToggleButton from '../../components/ToggleButton/ToggleButton';
 import ReqForCoinsForm from './ReqForCoinsForm/ReqForCoinsForm'
 import ReqForMerchForm from './ReqForMerchForm/ReqForMerchForm'
 import './CreateRequestPage.css';
 
+//TODO: сделать так, чтобы кнопка отправки и комментарий появлялись только при загрузке достижений
+//TODO: переписать подстановку данных о заявках под текущий сервер
 
 const CreateRequestPage = () => {
 
@@ -45,7 +47,7 @@ const CreateRequestPage = () => {
       
       alert (JSON.stringify(CoinReq))
       // try {
-      //   const response = await fetch('https://simplbot.onrender.com/api/submitCoinRequest', {
+      //   const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/submitCoinRequest', {
       //     method: 'POST',
       //     headers: {
       //       'Content-Type': 'application/json',

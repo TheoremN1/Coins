@@ -10,7 +10,7 @@ const Header = ({ title }) => {
 
     // const fetchBalance = async () => {
     //   try {
-    //     const response = await fetch('https://simplbot.loca.lt/api/getBalance');
+    //     const response = await fetch('import.meta.env.VITE_BACKEND_URL +'/getBalance');
     //     if (!response.ok) {
     //       throw new Error('Network response was not ok');
     //     }
