@@ -14,15 +14,18 @@ const Header = ({ title }) => {
          if (!response.ok) {
            throw new Error('Network response was not ok');
          }
-         const data = await response.json();   
-           
-         setBalance(data);
+         const data = await response.json();     
+         setBalance(data.balance);
        } catch (error) {
-         console.error('Balance fetch error: ', error);
+         console.error('Fetch error: ', error);
        }
      };
-     fetchBalance();
 
+      // fetch('https://simplbot.onrender.com/api/getBalance')
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     setBalance(data.balance);
+      // })
 
 
     
