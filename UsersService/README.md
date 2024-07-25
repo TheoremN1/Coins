@@ -4,9 +4,11 @@
 ## Запросы и примеры
 ### /api/users
 GET
+
 http://localhost:9004/api/users?id=1
 
 POST
+
 http://localhost:9004/api/users
 
 {
@@ -18,6 +20,7 @@ http://localhost:9004/api/users
 }
 
 PUT
+
 http://localhost:9004/api/users
 
 {
@@ -30,20 +33,25 @@ http://localhost:9004/api/users
 }
 
 DELETE
+
 http://localhost:9004/api/users?id=1
 
 ### /api/balance
 GET
+
 http://localhost:9004/api/balance?id=1
 
 PUT
+
 http://localhost:9004/api/balance?id=1&action=plus&amount=50
 
 http://localhost:9004/api/balance?id=1&action=minus&amount=30
 
 ### /api/role
 GET
+
 http://localhost:9004/api/role?id=1
 
 PUT
+
 http://localhost:9004/api/role?id=1&role=hr
