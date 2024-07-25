@@ -18,6 +18,10 @@ func (requestController *RequestController) Post(context *gin.Context) {
 
 }
 
+func (requestController *RequestController) Put(context *gin.Context) {
+
+}
+
 func (requestController *RequestController) Delete(context *gin.Context) {
 
 }

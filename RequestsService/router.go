@@ -45,6 +45,7 @@ func NewRouter() *Router {
 	requestsController := controllers.NewRequestController("http://" + databaseUrl)
 	engine.GET("/api/requests", requestsController.Get)
 	engine.POST("/api/requests", requestsController.Post)
+	engine.PUT("/api/requests", requestsController.Put)
 	engine.DELETE("/api/requests", requestsController.Delete)
 
 	return &Router{engine, serverUrl}
