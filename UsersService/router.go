@@ -48,9 +48,9 @@ func NewRouter() *Router {
 	engine.PUT("/api/users", userController.Put)
 	engine.DELETE("/api/users", userController.Delete)
 
-	balanceController := controllers.NewBalanceController()
-	engine.GET("/balance", balanceController.Get)
-	engine.PUT("/balance", balanceController.Put)
+	balanceController := controllers.NewBalanceController("http://" + databaseUrl)
+	engine.GET("/api/balance", balanceController.Get)
+	engine.PUT("/api/balance", balanceController.Put)
 
 	return &Router{engine, serverUrl}
 }

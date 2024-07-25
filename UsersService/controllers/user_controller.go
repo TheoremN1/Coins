@@ -24,8 +24,14 @@ func (userController *UserController) Get(context *gin.Context) {
 
 	url := userController.databaseUrl + "/api/users/" + id
 	client := &http.Client{}
-	req, _ := sling.New().Get(url).Request()
-	resp, _ := client.Do(req)
+	req, err := sling.New().Get(url).Request()
+	if err != nil {
+		panic(err)
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
 	defer resp.Body.Close()
 
 	var user *models.User
@@ -40,8 +46,14 @@ func (userController *UserController) Post(context *gin.Context) {
 
 	url := userController.databaseUrl + "/api/users"
 	client := &http.Client{}
-	req, _ := sling.New().Post(url).BodyForm(user).Request()
-	resp, _ := client.Do(req)
+	req, err := sling.New().Post(url).BodyForm(user).Request()
+	if err != nil {
+		panic(err)
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
 	defer resp.Body.Close()
 
 	var isPosted bool
@@ -56,8 +68,14 @@ func (userController *UserController) Put(context *gin.Context) {
 
 	url := userController.databaseUrl + "/api/users/" + strconv.Itoa(user.Id)
 	client := &http.Client{}
-	req, _ := sling.New().Put(url).BodyForm(user).Request()
-	resp, _ := client.Do(req)
+	req, err := sling.New().Put(url).BodyForm(user).Request()
+	if err != nil {
+		panic(err)
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
 	defer resp.Body.Close()
 
 	var isPuted bool
@@ -72,8 +90,14 @@ func (userController *UserController) Delete(context *gin.Context) {
 
 	url := userController.databaseUrl + "/api/users/" + id
 	client := &http.Client{}
-	req, _ := sling.New().Delete(url).Request()
-	resp, _ := client.Do(req)
+	req, err := sling.New().Delete(url).Request()
+	if err != nil {
+		panic(err)
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
 	defer resp.Body.Close()
 
 	var isDeleted *bool
