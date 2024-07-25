@@ -1,45 +1,27 @@
 package controllers
 
-import (
-	"net/http"
-	"strconv"
-
-	"github.com/TheoremN1/Coins/receiver/database/models"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
-)
+import "github.com/gin-gonic/gin"
 
 type AchievementsController struct {
-	database *gorm.DB
+	databaseUrl string
 }
 
-func NewAchievementsController(database *gorm.DB) *AchievementsController {
-	return &AchievementsController{database}
+func NewAchievementsController(databaseUrl string) *AchievementsController {
+	return &AchievementsController{databaseUrl}
 }
 
 func (achievementsController *AchievementsController) Get(context *gin.Context) {
-	// Output
-	var status int
-	var hash gin.H
 
-	var achievements []models.Achievement
-	achievementsController.database.
-		Find(&achievements)
+}
 
-	if len(achievements) > 0 {
-		hash = gin.H{}
-		for i := 0; i < len(achievements); i++ {
-			achievement := achievements[i]
-			hash[strconv.Itoa(achievement.Id)] = gin.H{
-				"name":        achievement.Name,
-				"description": achievement.Description,
-				"reward":      achievement.Reward,
-			}
-		}
-	} else {
-		status = http.StatusBadRequest
-		hash = nil
-	}
+func (achievementsController *AchievementsController) Post(context *gin.Context) {
 
-	context.JSON(status, hash)
+}
+
+func (achievementsController *AchievementsController) Put(context *gin.Context) {
+
+}
+
+func (achievementsController *AchievementsController) Delete(context *gin.Context) {
+
 }
