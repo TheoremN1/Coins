@@ -43,7 +43,7 @@ func (roleController *RoleController) Get(context *gin.Context) {
 func (roleController *RoleController) Put(context *gin.Context) {
 	query := context.Request.URL.Query()
 	id := query.Get("id")
-	roleKey := query.Get("rolekey")
+	role := query.Get("role")
 
 	url := roleController.databaseUrl + "/api/users/" + id
 	user, status := GetUser(url)
@@ -51,7 +51,7 @@ func (roleController *RoleController) Put(context *gin.Context) {
 	if user == nil {
 		context.JSON(status, false)
 	} else {
-		user.RoleKey = roleKey
+		user.RoleKey = role
 		isPuted, status := EditUser(url, user)
 		context.JSON(status, isPuted)
 	}
