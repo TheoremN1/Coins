@@ -38,6 +38,7 @@ http://localhost:9004/api/balance?id=1
 
 PUT
 http://localhost:9004/api/balance?id=1&action=plus&amount=50
+
 http://localhost:9004/api/balance?id=1&action=minus&amount=30
 
 ### /api/role
