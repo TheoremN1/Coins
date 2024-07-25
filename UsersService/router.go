@@ -20,7 +20,7 @@ func GetUrl(jsonPath string) string {
 	confFile, _ := os.Open(jsonPath)
 	defer confFile.Close()
 	bytes, _ := io.ReadAll(confFile)
-	configuration := configs.ServerConfiguration{}
+	configuration := configs.ConnectionConfiguration{}
 	json.Unmarshal(bytes, &configuration)
 	return configuration.Host + ":" + configuration.Port
 }

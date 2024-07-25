@@ -1,6 +1,6 @@
 package configs
 
-type ServerConfiguration struct {
+type ConnectionConfiguration struct {
 	Host string
 	Port string
 }
