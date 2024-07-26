@@ -8,6 +8,7 @@ import (
 
 	"github.com/TheoremN1/Coins/RequestsService/configs"
 	"github.com/TheoremN1/Coins/RequestsService/controllers"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,25 +29,24 @@ func GetUrl(jsonPath string) string {
 func NewRouter() *Router {
 	serverUrl := GetUrl(filepath.Join("configs", "server.json"))
 	databaseUrl := GetUrl(filepath.Join("configs", "database.json"))
+	reactUrl := GetUrl(filepath.Join("configs", "react.json"))
 
 	engine := gin.Default()
-	/*
-		engine.Use(cors.New(cors.Config{
-			AllowOrigins:     []string{"http://" + serverUrl},
-			AllowCredentials: true,
-			/*
-				AllowOriginFunc: func(origin string) bool {
-					return origin == <URL на ReactApp>
-				},
-			/
-			MaxAge: 12 * time.Hour,
-		}))
-	*/
-	requestsController := controllers.NewRequestController("http://" + databaseUrl)
-	engine.GET("/api/requests", requestsController.Get)
-	engine.POST("/api/requests", requestsController.Post)
-	engine.PUT("/api/requests", requestsController.Put)
-	engine.DELETE("/api/requests", requestsController.Delete)
+	engine.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://" + reactUrl},
+	}))
+
+	coinsRequestsController := controllers.NewCoinsRequestController("http://" + databaseUrl)
+	engine.GET("/api/coinsrequests", coinsRequestsController.Get)
+	engine.POST("/api/coinsrequests", coinsRequestsController.Post)
+	engine.PUT("/api/coinsrequests", coinsRequestsController.Put)
+	engine.DELETE("/api/coinsrequests", coinsRequestsController.Delete)
+
+	merchRequestsController := controllers.NewMerchRequestController("http://" + databaseUrl)
+	engine.GET("/api/merchrequests", merchRequestsController.Get)
+	engine.POST("/api/merchrequests", merchRequestsController.Post)
+	engine.PUT("/api/merchrequests", merchRequestsController.Put)
+	engine.DELETE("/api/merchrequests", merchRequestsController.Delete)
 
 	return &Router{engine, serverUrl}
 }
