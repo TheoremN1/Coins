@@ -29,13 +29,10 @@ func GetUrl(jsonPath string) string {
 func NewRouter() *Router {
 	serverUrl := GetUrl(filepath.Join("configs", "server.json"))
 	databaseUrl := GetUrl(filepath.Join("configs", "database.json"))
-	reactUrl := GetUrl(filepath.Join("configs", "react.json"))
+	//reactUrl := GetUrl(filepath.Join("configs", "react.json"))
 
 	engine := gin.Default()
-	engine.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://" + reactUrl},
-		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
-	}))
+	engine.Use(cors.Default())
 
 	userController := controllers.NewUserController("http://" + databaseUrl)
 	engine.GET("/api/users", userController.Get)
