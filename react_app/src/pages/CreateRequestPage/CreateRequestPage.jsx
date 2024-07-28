@@ -8,7 +8,6 @@ import ReqForMerchForm from './ReqForMerchForm/ReqForMerchForm'
 import './CreateRequestPage.css';
 
 //TODO: сделать так, чтобы кнопка отправки и комментарий появлялись только при загрузке достижений
-//TODO: переписать подстановку данных о заявках под текущий сервер
 
 const CreateRequestPage = () => {
 
@@ -16,6 +15,7 @@ const CreateRequestPage = () => {
     const [selection, setSelection] = useState(null);
     // const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
     const [selectedAchievement, setSelectedAchievement] = useState('');
+    const [selectedMerch, setSelectedMerch] = useState('');
     const [comment, setComment] = useState('');
 
     
@@ -31,42 +31,63 @@ const CreateRequestPage = () => {
     const handleCommentChange = (event) => {
       setComment(event.target.value);
     };
+    const handleMerchChange = (merchId) => {
+      setSelectedMerch(merchId);
+    };
 
 
-    const handleSubmit = async () => {
-      // if (!isReadyToSubmit) return;
-      
-  
-      const CoinReq = {
-        id_user: 0, //TODO: задать id юзера после реализации сервиса регистрации
-        id_achievement: selectedAchievement,
-        comment_hr: '1',
-        comment_s: comment,
-        id_status: 1
-      };
-      
-      alert (JSON.stringify(CoinReq))
-      // try {
-      //   const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/submitCoinRequest', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(CoinReq),
-      //   });
-  
-      //   if (response.ok) {
-      //     console.log('Application submitted successfully');
-  
-      //   } else {
-      //     console.error('Failed to submit application');
-      //   }
-      // } catch (error) {
-      //   console.error('Error submitting application:', error);
-      // }
-  
-      navigate('/');
+
+    const submitRequest = async (request, path) => {
+      try {
+           const response = await fetch(VITE_REQUESTS_SERVICE_URL + path, {
+             method: 'POST',
+             headers: {
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify(request),
+           });
     
+           if (response.ok) {
+             console.log('Application submitted successfully');
+    
+           } else {
+             console.error('Failed to submit request');
+           }
+         } catch (error) {
+           console.error('Error submitting request:', error);
+         }
+
+
+    }
+
+    const handleSubmit = () => {
+
+      const userId = sessionStorage.getItem('userId');
+
+      if (selection==="right") {
+
+        const CoinReq = {
+          userId: userId, 
+          userMessage: comment,
+          achievementId: selectedAchievement    
+        };
+
+        submitRequest(CoinReq, '/coinsrequests')      
+        alert (JSON.stringify(CoinReq))
+
+    } else {
+
+        const MerchReq = {
+          userId: userId, 
+          userMessage: comment,
+          merchId: 1
+        };
+
+        submitRequest(MerchReq, '/merchrequests')
+
+    }
+       
+      navigate('/');
   
     };
 
@@ -89,7 +110,11 @@ const CreateRequestPage = () => {
           selectedAchievement={selectedAchievement}
           onAchievementChange={handleAchievementChange} />}
 
-        {selection === 'left' && <ReqForMerchForm />}
+        {selection === 'left' &&
+        <ReqForMerchForm 
+        onMerchSelect={handleMerchChange}
+        selectedMerch={selectedMerch}
+        />}
 
 
         <p>Прикрепите доказательства наличия достижения</p>

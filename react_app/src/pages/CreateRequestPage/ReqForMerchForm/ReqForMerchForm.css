@@ -1,0 +1,65 @@
+.form-merch {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .merch-grid {
+    display: grid;
+    gap: 20px;
+     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+
+    /* grid-template-rows: repeat(auto-fill,  1fr); */
+    align-self: center;
+  }
+  .merch-item-container {
+    display: block;
+
+  }
+  .merch-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    padding: 5px;
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  /* .merch-item p {
+    align-items: left;
+  }
+
+
+  .merch-item image {
+    align-items: center;
+  } */
+
+  
+  .merch-item.selected{
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+  }
+  
+  .merch-item:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .merch-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  /* .merch-info {
+
+ 
+  }
+   */
+  .coin-icon {
+    color: gold;
+  }

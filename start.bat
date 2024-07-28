@@ -10,6 +10,10 @@ start cmd.exe /k "go run cmd/main.go"
 cd ../requests_service
 start cmd.exe /k "go run cmd/main.go"
 
+cd ../requests_service
+start cmd.exe /k "go run cmd/main.go"
+
+
 cd ../react_app
 start cmd.exe /k "npm run dev"
 
