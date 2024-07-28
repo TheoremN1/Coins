@@ -39,7 +39,7 @@ const CreateRequestPage = () => {
 
     const submitRequest = async (request, path) => {
       try {
-           const response = await fetch(VITE_REQUESTS_SERVICE_URL + path, {
+           const response = await fetch(import.meta.env.VITE_REQUESTS_SERVICE_URL + path, {
              method: 'POST',
              headers: {
                'Content-Type': 'application/json',
