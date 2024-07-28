@@ -34,6 +34,7 @@ func NewRouter() *Router {
 	engine := gin.Default()
 	engine.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"http://" + reactUrl},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
 	}))
 
 	userController := controllers.NewUserController("http://" + databaseUrl)
