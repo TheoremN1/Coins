@@ -65,6 +65,12 @@ public class CoinsRequestsController(DatabaseContext context) : ControllerBase
         if (await _context.CoinsRequests.AnyAsync(cr => cr.Id == coinsRequest.Id))
             return false;
 
+        if (coinsRequest.HrId < 1)
+        {
+            coinsRequest.HrId = null;
+            coinsRequest.HrMessage = null;
+        }
+
         await _context.CoinsRequests.AddAsync(coinsRequest);
         await _context.SaveChangesAsync();
         return true;
@@ -77,6 +83,12 @@ public class CoinsRequestsController(DatabaseContext context) : ControllerBase
         var oldCoinsRequest = await _context.CoinsRequests.FirstOrDefaultAsync(cr => cr.Id == id);
         if (oldCoinsRequest is null)
             return false;
+
+        if (newCoinsRequest.HrId < 1)
+        {
+            newCoinsRequest.HrId = null;
+            newCoinsRequest.HrMessage = null;
+        }
 
         oldCoinsRequest.UserMessage = newCoinsRequest.UserMessage;
         oldCoinsRequest.HrId = newCoinsRequest.HrId;
