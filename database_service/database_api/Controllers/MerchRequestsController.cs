@@ -64,6 +64,12 @@ public class MerchRequestsController(DatabaseContext context) : ControllerBase
         if (await _context.MerchRequests.AnyAsync(mr => mr.Id == merchRequest.Id))
             return false;
 
+        if(merchRequest.HrId < 1)
+        {
+            merchRequest.HrId = null;
+            merchRequest.HrMessage = null;
+        }
+
         await _context.MerchRequests.AddAsync(merchRequest);
         await _context.SaveChangesAsync();
         return true;
@@ -76,6 +82,12 @@ public class MerchRequestsController(DatabaseContext context) : ControllerBase
         var oldMerchRequest = await _context.MerchRequests.FirstOrDefaultAsync(cr => cr.Id == id);
         if (oldMerchRequest is null)
             return false;
+
+        if (newMerchRequest.HrId < 1)
+        {
+            newMerchRequest.HrId = null;
+            newMerchRequest.HrMessage = null;
+        }
 
         oldMerchRequest.UserMessage = newMerchRequest.UserMessage;
         oldMerchRequest.HrId = newMerchRequest.HrId;

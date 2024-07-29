@@ -42,6 +42,8 @@ func (merchRequestController *MerchRequestController) Post(context *gin.Context)
 	json.NewDecoder(context.Request.Body).Decode(&request)
 
 	request.StatusKey = "wait"
+	request.HrId = -1
+	request.HrMessage = ""
 
 	url := merchRequestController.databaseUrl + "/api/merchrequests"
 	client := &http.Client{}

@@ -12,9 +12,9 @@ POST
 http://localhost:9003/api/coinsrequests
 
 {
-  "userId": "1",
+  "userId": 1,
   "userMessage": "Я заслужил!",
-  "achievementId": "1"
+  "achievementId": 1
 }
 
 PUT
@@ -22,11 +22,11 @@ PUT
 http://localhost:9003/api/coinsrequests
 
 {
-  "id" : "1",
-  "userId": "1",
+  "id" : 1,
+  "userId": 1,
   "userMessage": "Я заслужил!",
-  "achievementId": "1",
-  "hrId": "2",
+  "achievementId": 1,
+  "hrId": 2,
   "hrMessage": ")))",
   "statusKey": "denied"
 }
@@ -45,9 +45,9 @@ POST
 http://localhost:9003/api/merchrequests
 
 {
-  "userId": "1",
+  "userId": 1,
   "userMessage": "Хочу вот эту кепку",
-  "merchId": "1"
+  "merchId": 1
 }
 
 PUT
@@ -55,11 +55,11 @@ PUT
 http://localhost:9003/api/merchrequests
 
 {
-  "id" : "1",
-  "userId": "1",
+  "id" : 1,
+  "userId": 1,
   "userMessage": "Хочу вот эту кепку",
-  "merchId": "1",
-  "hrId": "2",
+  "merchId": 1,
+  "hrId": 2,
   "hrMessage": "Приходите за этой кепкой в понедельник в наш отдел",
   "statusKey": "accept"
 }
