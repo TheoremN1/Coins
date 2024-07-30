@@ -21,6 +21,8 @@ public class MerchRequest
 
 	public string StatusKey { get; set; }
 
+	public string? ImageUrl { get; set; }
+
 
 	[ForeignKey(nameof(UserId))]
 	public User? User { get; set; }
