@@ -14,7 +14,8 @@ http://localhost:9003/api/coinsrequests
 {
   "userId": 1,
   "userMessage": "Я заслужил!",
-  "achievementId": 1
+  "achievementId": 1,
+  "fileUrl": "/path/to/file.pdf"
 }
 
 PUT
@@ -26,6 +27,7 @@ http://localhost:9003/api/coinsrequests
   "userId": 1,
   "userMessage": "Я заслужил!",
   "achievementId": 1,
+  "fileUrl": "/path/to/file.pdf",
   "hrId": 2,
   "hrMessage": ")))",
   "statusKey": "denied"
@@ -47,7 +49,8 @@ http://localhost:9003/api/merchrequests
 {
   "userId": 1,
   "userMessage": "Хочу вот эту кепку",
-  "merchId": 1
+  "merchId": 1,
+  "imageUrl": "/path/to/image.jpg"
 }
 
 PUT
@@ -59,6 +62,7 @@ http://localhost:9003/api/merchrequests
   "userId": 1,
   "userMessage": "Хочу вот эту кепку",
   "merchId": 1,
+  "imageUrl": "/path/to/image.jpg",
   "hrId": 2,
   "hrMessage": "Приходите за этой кепкой в понедельник в наш отдел",
   "statusKey": "accept"

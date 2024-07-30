@@ -8,4 +8,5 @@ type MerchRequest struct {
 	HrMessage   string
 	MerchId     int
 	StatusKey   string
+	ImageUrl    string
 }

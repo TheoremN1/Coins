@@ -21,6 +21,8 @@ public class CoinsRequest
 
 	public string StatusKey { get; set; }
 
+	public string? FileUrl { get; set; }
+
 
 	[ForeignKey(nameof(UserId))]
 	public User? User { get; set; }

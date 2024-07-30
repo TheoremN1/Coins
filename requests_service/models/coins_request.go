@@ -8,4 +8,5 @@ type CoinsRequest struct {
 	HrMessage     string
 	AchievementId int
 	StatusKey     string
+	FileUrl       string
 }
