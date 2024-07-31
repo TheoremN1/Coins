@@ -34,16 +34,16 @@ services:
     networks:
       - server_net
 
-  product_service:
-    container_name: product_service
-    build: ./product_service
+  products_service:
+    container_name: products_service
+    build: ./products_service
     depends_on:
       - database_service
     environment:
-      PRODUCT_SERVICE_PORT: ${PRODUCT_SERVICE_PORT}
+      PRODUCTS_SERVICE_PORT: ${PRODUCTS_SERVICE_PORT}
       DATABASE_SERVICE_PORT: ${DATABASE_SERVICE_PORT}
     ports:
-      - ${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}
+      - ${PRODUCTS_SERVICE_PORT}:${PRODUCTS_SERVICE_PORT}
     networks:
       - server_net
 
@@ -77,13 +77,15 @@ services:
     container_name: react_app
     build: ./react_app
     depends_on:
-      - product_service
+      - products_service
       - requests_service
       - users_service
     environment:
-      PRODUCT_SERVICE_PORT: ${PRODUCT_SERVICE_PORT}
+      PRODUCTS_SERVICE_PORT: ${PRODUCTS_SERVICE_PORT}
       REQUEST_SERVICE_PORT: ${REQUEST_SERVICE_PORT}
       USERS_SERVICE_PORT: ${USERS_SERVICE_PORT}
+    ports: 
+      - ${REACT_APP_PORT}:80
     networks:
       - server_net
 

@@ -26,7 +26,7 @@ func GetUrl(jsonPath string) string {
 }
 
 func NewRouter() *Router {
-	serverUrl := ":" + os.Getenv("PRODUCT_SERVICE_PORT")
+	serverUrl := ":" + os.Getenv("PRODUCTS_SERVICE_PORT")
 	databaseUrl := "database_service:" + os.Getenv("DATABASE_SERVICE_PORT")
 	//reactUrl := GetUrl(filepath.Join("configs", "react.json"))
 
