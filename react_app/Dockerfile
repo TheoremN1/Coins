@@ -6,6 +6,6 @@ COPY . .
 
 RUN npm i
 
-EXPOSE ${REACT_APP_PORT}
+EXPOSE 80
 
 CMD ["npm", "run", "dev"]

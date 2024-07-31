@@ -61,8 +61,6 @@ services:
       PRODUCTS_SERVICE_PORT: ${PRODUCTS_SERVICE_PORT}
       REQUEST_SERVICE_PORT: ${REQUEST_SERVICE_PORT}
       USERS_SERVICE_PORT: ${USERS_SERVICE_PORT}
-    ports:
-      - "${REACT_APP_PORT}:${REACT_APP_PORT}"
     networks:
       - server_net
 
