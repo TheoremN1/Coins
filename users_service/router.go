@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io"
 	"os"
-	"path/filepath"
 
 	"github.com/TheoremN1/Coins/UsersService/configs"
 	"github.com/TheoremN1/Coins/UsersService/controllers"
@@ -27,8 +26,8 @@ func GetUrl(jsonPath string) string {
 }
 
 func NewRouter() *Router {
-	serverUrl := GetUrl(filepath.Join("configs", "server.json"))
-	databaseUrl := GetUrl(filepath.Join("configs", "database.json"))
+	serverUrl := ":" + os.Getenv("USERS_SERVICE_PORT")
+	databaseUrl := "database_service:" + os.Getenv("DATABASE_SERVICE_PORT")
 	//reactUrl := GetUrl(filepath.Join("configs", "react.json"))
 
 	engine := gin.Default()

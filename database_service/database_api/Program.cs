@@ -12,79 +12,86 @@ public class Program
 	public static void Main(string[] args)
 	{
 		var builder = WebApplication.CreateBuilder(args);
-		using (var streamReader = new StreamReader(Path.Join("Configs", "database.json")))
+
+		var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
+		var name = Environment.GetEnvironmentVariable("POSTGRES_NAME");
+		var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
+		var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+		var user = Environment.GetEnvironmentVariable("POSTGRES_USER");
+		var stringConnection =
+			$"Host={host};" +
+			$"Port={port};" +
+			$"Database={name};" +
+			$"Username={user};" +
+			$"Password={password}";
+		builder.Services.AddSingleton(_ =>
 		{
-			var json = streamReader.ReadToEnd();
-			var items = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)
-				?? throw new NullReferenceException("Что-то не так с файлом database.json");
-			var stringConnection =
-				$"Host={items["host"]};" +
-				$"Port={items["port"]};" +
-				$"Database={items["database"]};" +
-				$"Username={items["username"]};" +
-				$"Password={items["password"]}";
-			builder.Services.AddSingleton(_ => {
-				var options = new DbContextOptionsBuilder<DatabaseContext>();
-				options.UseNpgsql(stringConnection);
-				return new DatabaseContext(options.Options);
-			});
-		}
+			var options = new DbContextOptionsBuilder<DatabaseContext>();
+			options.UseNpgsql(stringConnection);
+			return new DatabaseContext(options.Options);
+		});
 		builder.Services.AddControllers();
 
 		var app = builder.Build();
 
 		var context = app.Services.GetRequiredService<DatabaseContext>();
 		var databaseCreator = (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
-		// TODO: \/ При релизе убрать \/
-		databaseCreator.EnsureDeleted(); 
+		// TODO: \/ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ \/
+		databaseCreator.EnsureDeleted();
 		databaseCreator.EnsureCreated();
-		//		 /\ При релизе убрать /\
+		//		 /\ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ /\
 		using (var streamReader = new StreamReader(Path.Join("Configs", "roles.json")))
 		{
 			var json = streamReader.ReadToEnd();
 			var items = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(json)
-				?? throw new NullReferenceException("Что-то не так с файлом roles.json");
-			foreach(var item in items)
+				?? throw new NullReferenceException("пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ roles.json");
+			foreach (var item in items)
 			{
 				if (item is null)
-					throw new NullReferenceException("Что-то не так с файлом roles.json");
+					throw new NullReferenceException("пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ roles.json");
 				context.Roles.Add(new Role() { Key = item["key"], Name = item["name"] });
 			}
 		};
-        using (var streamReader = new StreamReader(Path.Join("Configs", "statuses.json")))
-        {
-            var json = streamReader.ReadToEnd();
-            var items = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(json)
-                ?? throw new NullReferenceException("Что-то не так с файлом statuses.json");
-            foreach (var item in items)
-            {
-                if (item is null)
-                    throw new NullReferenceException("Что-то не так с файлом statuses.json");
-                context.Statuses.Add(new Status() { Key = item["key"], Name = item["name"] });
-            }
-        };
-        // TODO: \/ При релизе убрать \/
-		// Эти данные нужны только для теста контроллеров
-        context.Users.Add(new User(){ 
-			Name = "Ivan", Surname = "Pupkin", 
-			Login = "rockstar13", Password = "qwerty", 
-			RoleKey = "admin" });
-        context.Achievements.Add(new Achievement() { 
-			Name = "Сотрудник месяца", 
-			Description = "Вы стали лучшим сотрудником в этом месяце? Поздравляем! :)",
+		using (var streamReader = new StreamReader(Path.Join("Configs", "statuses.json")))
+		{
+			var json = streamReader.ReadToEnd();
+			var items = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(json)
+				?? throw new NullReferenceException("пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ statuses.json");
+			foreach (var item in items)
+			{
+				if (item is null)
+					throw new NullReferenceException("пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ statuses.json");
+				context.Statuses.Add(new Status() { Key = item["key"], Name = item["name"] });
+			}
+		};
+		// TODO: \/ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ \/
+		// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		context.Users.Add(new User()
+		{
+			Name = "Ivan",
+			Surname = "Pupkin",
+			Login = "rockstar13",
+			Password = "qwerty",
+			RoleKey = "admin"
+		});
+		context.Achievements.Add(new Achievement()
+		{
+			Name = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ",
+			Description = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ? пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ! :)",
 			Reward = 30
 		});
-        context.Merches.Add(new Merch()
-        {
-            Name = "Рюкзак",
-            Description = "Цвет: Черный, Объем: 30л",
-            Price = 20
-        });
-        //		 /\ При релизе убрать /\
-        context.SaveChanges();
+		context.Merches.Add(new Merch()
+		{
+			Name = "пїЅпїЅпїЅпїЅпїЅпїЅ",
+			Description = "пїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ: 30пїЅ",
+			Price = 20
+		});
+		//		 /\ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ /\
+		context.SaveChanges();
 
 		app.UseAuthorization();
 		app.MapControllers();
-		app.Run();
+		var servicePort = Environment.GetEnvironmentVariable("DATABASE_SERVICE_PORT");
+		app.Run($":{servicePort}");
 	}
 }

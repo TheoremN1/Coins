@@ -1,0 +1,95 @@
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    command:
+      - 'postgres'
+      - '-c'
+      - 'port=${POSTGRES_PORT}'
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - db_vol:/var/lib/postgresql/data
+    networks:
+      - server_net
+      
+  database_service:
+    container_name: database_service
+    build: ./database_service
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_SERVICE_PORT: ${DATABASE_SERVICE_PORT}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_NAME: ${POSTGRES_NAME}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    ports:
+      - ${DATABASE_SERVICE_PORT}:8080
+    networks:
+      - server_net
+
+  product_service:
+    container_name: product_service
+    build: ./product_service
+    depends_on:
+      - database_service
+    environment:
+      PRODUCT_SERVICE_PORT: ${PRODUCT_SERVICE_PORT}
+      DATABASE_SERVICE_PORT: ${DATABASE_SERVICE_PORT}
+    ports:
+      - ${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}
+    networks:
+      - server_net
+
+  requests_service:
+    container_name: requests_service
+    build: ./requests_service
+    depends_on:
+      - database_service
+    environment:
+      REQUEST_SERVICE_PORT: ${REQUEST_SERVICE_PORT}
+      DATABASE_SERVICE_PORT: ${DATABASE_SERVICE_PORT}
+    ports:
+      - ${REQUEST_SERVICE_PORT}:${REQUEST_SERVICE_PORT}
+    networks:
+      - server_net
+
+  users_service:
+    container_name: users_service
+    build: ./users_service
+    depends_on:
+      - database_service
+    environment:
+      USERS_SERVICE_PORT: ${USERS_SERVICE_PORT}
+      DATABASE_SERVICE_PORT: ${DATABASE_SERVICE_PORT}
+    ports:
+      - ${USERS_SERVICE_PORT}:${USERS_SERVICE_PORT}
+    networks:
+      - server_net
+
+  react_app:
+    container_name: react_app
+    build: ./react_app
+    depends_on:
+      - product_service
+      - requests_service
+      - users_service
+    environment:
+      PRODUCT_SERVICE_PORT: ${PRODUCT_SERVICE_PORT}
+      REQUEST_SERVICE_PORT: ${REQUEST_SERVICE_PORT}
+      USERS_SERVICE_PORT: ${USERS_SERVICE_PORT}
+    networks:
+      - server_net
+
+volumes:
+  db_vol: {}
+
+networks:
+  server_net:
+    driver: bridge
