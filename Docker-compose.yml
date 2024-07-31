@@ -1,0 +1,83 @@
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    command:
+      - 'postgres'
+      - '-c'
+      - 'port=${POSTGRES_PORT}'
+    volumes:
+      - db_vol:/var/lib/postgresql/data
+    networks:
+      - server_net
+      
+  database_service:
+    container_name: database_service
+    build: ./database_service
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_SERVICE_PORT: ${DATABASE_SERVICE_PORT}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_NAME: ${POSTGRES_NAME}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    networks:
+      - server_net
+
+  products_service:
+    container_name: products_service
+    build: ./products_service
+    environment:
+      PRODUCTS_SERVICE_PORT: ${PRODUCTS_SERVICE_PORT}
+    networks:
+      - server_net
+
+  requests_service:
+    container_name: requests_service
+    build: ./requests_service
+    environment:
+      REQUEST_SERVICE_PORT: ${REQUEST_SERVICE_PORT}
+    networks:
+      - server_net
+
+  users_service:
+    container_name: users_service
+    build: ./users_service
+    environment:
+      USERS_SERVICE_PORT: ${USERS_SERVICE_PORT}
+    networks:
+      - server_net
+
+  react_app:
+    container_name: react_app
+    build: ./react_app
+    environment:
+      PRODUCTS_SERVICE_PORT: ${PRODUCTS_SERVICE_PORT}
+      REQUEST_SERVICE_PORT: ${REQUEST_SERVICE_PORT}
+      USERS_SERVICE_PORT: ${USERS_SERVICE_PORT}
+    networks:
+      - server_net
+
+  nginx:
+    container_name: nginx_coins
+    image: nginx:1.25.4-alpine
+    restart: on-failure
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - server_net
+
+volumes:
+  db_vol: {}
+
+networks:
+  server_net:
+    driver: bridge
