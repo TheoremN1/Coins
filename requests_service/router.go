@@ -1,11 +1,8 @@
 package requests_service
 
 import (
-	"encoding/json"
-	"io"
 	"os"
 
-	"github.com/TheoremN1/Coins/RequestsService/configs"
 	"github.com/TheoremN1/Coins/RequestsService/controllers"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -16,30 +13,20 @@ type Router struct {
 	url    string
 }
 
-func GetUrl(jsonPath string) string {
-	confFile, _ := os.Open(jsonPath)
-	defer confFile.Close()
-	bytes, _ := io.ReadAll(confFile)
-	configuration := configs.ConnectionConfiguration{}
-	json.Unmarshal(bytes, &configuration)
-	return configuration.Host + ":" + configuration.Port
-}
-
 func NewRouter() *Router {
 	serverUrl := ":" + os.Getenv("REQUEST_SERVICE_PORT")
-	databaseUrl := "database_service:" + os.Getenv("DATABASE_SERVICE_PORT")
-	//reactUrl := GetUrl(filepath.Join("configs", "react.json"))
+	databaseUrl := "http://database_service"
 
 	engine := gin.Default()
 	engine.Use(cors.Default())
 
-	coinsRequestsController := controllers.NewCoinsRequestController("http://" + databaseUrl)
+	coinsRequestsController := controllers.NewCoinsRequestController(databaseUrl)
 	engine.GET("/api/coinsrequests", coinsRequestsController.Get)
 	engine.POST("/api/coinsrequests", coinsRequestsController.Post)
 	engine.PUT("/api/coinsrequests", coinsRequestsController.Put)
 	engine.DELETE("/api/coinsrequests", coinsRequestsController.Delete)
 
-	merchRequestsController := controllers.NewMerchRequestController("http://" + databaseUrl)
+	merchRequestsController := controllers.NewMerchRequestController(databaseUrl)
 	engine.GET("/api/merchrequests", merchRequestsController.Get)
 	engine.POST("/api/merchrequests", merchRequestsController.Post)
 	engine.PUT("/api/merchrequests", merchRequestsController.Put)

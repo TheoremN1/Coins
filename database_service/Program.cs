@@ -88,4 +88,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 var servicePort = Environment.GetEnvironmentVariable("DATABASE_SERVICE_PORT");
-app.Run($"http://localhost:{servicePort}");
+app.Run($"http://[::]:{servicePort}");
