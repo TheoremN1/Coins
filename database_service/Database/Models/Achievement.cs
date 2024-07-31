@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DatabaseAPI.Database.Models;
+namespace database_service.Database.Models;
 
 public class Achievement
 {

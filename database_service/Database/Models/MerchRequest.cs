@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace DatabaseAPI.Database.Models;
+namespace database_service.Database.Models;
 
-public class CoinsRequest
+public class MerchRequest
 {
 	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,11 +17,11 @@ public class CoinsRequest
 
 	public string? HrMessage { get; set; }
 
-	public int AchievementId { get; set; }
+	public int MerchId { get; set; }
 
 	public string StatusKey { get; set; }
 
-	public string? FileUrl { get; set; }
+	public string? ImageUrl { get; set; }
 
 
 	[ForeignKey(nameof(UserId))]
@@ -30,8 +30,8 @@ public class CoinsRequest
 	[ForeignKey(nameof(HrId))]
 	public User? Hr { get; set; }
 
-	[ForeignKey(nameof(AchievementId))]
-	public Achievement? Achievement { get; set; }
+	[ForeignKey(nameof(MerchId))]
+	public Merch? Merch { get; set; }
 
 	[ForeignKey(nameof(StatusKey))]
 	public Status? Status { get; set; }

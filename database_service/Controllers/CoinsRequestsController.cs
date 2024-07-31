@@ -1,10 +1,10 @@
-﻿using DatabaseAPI.Database;
-using DatabaseAPI.Database.Models;
+﻿using database_service.Database;
+using database_service.Database.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
-namespace DatabaseAPI.Controllers;
+namespace database_service.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
