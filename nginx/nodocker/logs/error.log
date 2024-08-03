@@ -1,0 +1,7 @@
+2024/08/03 12:55:53 [emerg] 7052#19644: "server" directive is not allowed here in D:\Repos\Coins\nginx\nodocker/conf/nginx.conf:1
+2024/08/03 12:55:53 [alert] 12824#12356: worker process 7052 exited with code 1
+2024/08/03 12:55:53 [alert] 12824#12356: could not respawn worker
+2024/08/03 12:56:41 [emerg] 15084#10128: "server" directive is not allowed here in D:\Repos\Coins\nginx\nodocker/conf/nginx.conf:1
+2024/08/03 12:57:07 [emerg] 20612#20460: "server" directive is not allowed here in D:\Repos\Coins\nginx\nodocker/conf/nginx.conf:1
+2024/08/03 12:57:47 [emerg] 11028#7164: "server" directive is not allowed here in D:\Repos\Coins\nginx\nodocker/conf/nginx.conf:1
+2024/08/03 12:58:30 [emerg] 9628#5076: "server" directive is not allowed here in D:\Repos\Coins\nginx\nodocker/conf/nginx.conf:1
