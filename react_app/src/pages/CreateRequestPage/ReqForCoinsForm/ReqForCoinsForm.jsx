@@ -17,7 +17,7 @@ const ReqForCoinsForm = ({ selectedAchievement, onAchievementChange}) => {
     // Fetch achievements from the backend
     const fetchAchievements = async () => {
       try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/achievements');
+        const response = await fetch(import.meta.env.VITE_PRODUCTS_SERVICE_URL + '/api/achievements');
         const data = await response.json();
         setAchievements(data);
       } catch (error) {
@@ -50,16 +50,16 @@ const ReqForCoinsForm = ({ selectedAchievement, onAchievementChange}) => {
             
           <input
             type="radio"
-            id={`achievement-button ${achievement.id_achievement}`}
-            value={achievement.id_achievement}
-            checked={selectedAchievement === achievement.id_achievement}
-            onChange={() => onAchievementChange(achievement.id_achievement)}
+            id={`achievement-button ${achievement.Id}`}
+            value={achievement.Id}
+            // checked={selectedAchievement === achievement.Id}
+            onChange={() => onAchievementChange(achievement.Id)}
           />
          <label 
-          key={achievement.id_achievement}
+          key={achievement.Id}
           // className={`achievement-option ${selectedAchievement === achievement.id_achievement ? 'selected' : ''}`} 
-          for={`achievement-button ${achievement.id_achievement}`}>
-          {achievement.name}
+          htmlFor={`achievement-button ${achievement.Id}`}>
+          {achievement.Name}
         </label>
         </div>
       ))}

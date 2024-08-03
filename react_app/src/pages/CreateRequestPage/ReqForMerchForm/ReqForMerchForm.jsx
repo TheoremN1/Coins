@@ -8,17 +8,13 @@ const ReqForMerchForm = ({ onMerchSelect, selectedMerch }) => {
 
     useEffect(() => {
       const fetchMerchItems = async () => {
+
         try {
-          const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/merchItems');
+          const response = await fetch(import.meta.env.VITE_PRODUCTS_SERVICE_URL + '/api/merch');
           const data = await response.json();
           setMerchItems(data);
         } catch (error) {
           console.error('Error fetching merch items:', error);
-
-          const data = {}
-
-
-
         }
       };
   
@@ -30,16 +26,20 @@ const ReqForMerchForm = ({ onMerchSelect, selectedMerch }) => {
         <h3>Выберите товар</h3>
         <div className="merch-grid">
           {merchItems.map((item) => (
-            <div
-              key={item.id}
-              className={`merch-item ${selectedMerch === item.id ? 'selected' : ''}`}
-              onClick={() => onMerchSelect(item.id)}
-            >
-              <img src={'src/assets/Merch.png'} alt={item.name} className="merch-image" />
-              <div className="merch-info">
-                <p>{item.name}</p>
-                <p>{item.price} <span className="coin-icon">💰</span></p>
-              </div>
+            <div className= 'merch-item-container'>
+                <div
+                  key={item.Id}
+                  className={`merch-item ${selectedMerch === item.Id ? 'selected' : ''}`}
+                  onClick={() => onMerchSelect(item.Id)}
+                >
+                <img src={'src/assets/Merch.png'} alt={item.Name} className="merch-image" />   
+                <p>{item.Price} <span className="coin-icon">💰</span></p>
+                </div>
+
+                <div className="merch-info">      
+                <p>{item.Name}</p>                             
+                </div>
+
             </div>
           ))}
         </div>

@@ -7,7 +7,12 @@ import CreateRequestPage from './pages/CreateRequestPage/CreateRequestPage.jsx';
 function App() {
 
 useEffect (()=> {
-
+  try {
+    // Set an item in sessionStorage
+    window.sessionStorage.setItem("userId", 1); //Временно обозначим id пользователя 1
+  } catch (error) {
+    console.error('sessionStorage connection failed.', error)
+  }
 }, [])
 
 

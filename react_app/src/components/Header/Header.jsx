@@ -10,7 +10,7 @@ const Header = ({ title }) => {
 
      const fetchBalance = async () => {
        try {
-         const response = await fetch(import.meta.env.VITE_BACKEND_URL +'/api/balance' + '?id=1');
+         const response = await fetch(import.meta.env.VITE_USERS_SERVICE_URL +'/api/balance' + '?id=1');
          if (!response.ok) {
            throw new Error('Network response was not ok');
          }
