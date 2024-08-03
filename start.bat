@@ -11,7 +11,7 @@ cd ../requests_service
 start cmd.exe /k "go run cmd/main.go --nodocker"
 
 cd ../react_app
-start cmd.exe /k "npm run dev"
+start cmd.exe /k "npm i && npm run dev"
 
 cd ../nginx/nodocker
 start cmd.exe /k "nginx"
