@@ -15,7 +15,7 @@ type Router struct {
 
 func NewRouter() *Router {
 	serverUrl := ":" + os.Getenv("USERS_SERVICE_PORT")
-	databaseUrl := "http://nginx_coins/services/database"
+	databaseUrl := "http://" + os.Getenv("NGINX_HOST") + ":" + os.Getenv("NGINX_PORT") + "/services/database"
 
 	engine := gin.Default()
 	engine.Use(cors.Default())

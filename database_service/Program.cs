@@ -4,8 +4,13 @@ using database_service.Database.Models;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Newtonsoft.Json;
+using dotenv.net;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if(args.Length > 0 && args[0] == "--nodocker"){
+    DotEnv.Load();
+}
 
 var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
 var name = Environment.GetEnvironmentVariable("POSTGRES_NAME");
