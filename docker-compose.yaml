@@ -1,0 +1,42 @@
+services:
+
+  auth:
+    container_name: ${AUTH_HOST}
+    build: ./auth
+    depends_on:
+      - auth_database
+    environment:
+      SERVER_HOST: ${AUTH_HOST}
+      SERVER_PORT: ${AUTH_PORT}
+      DATABASE_HOST: ${AUTH_DATABASE_HOST}
+      DATABASE_PORT: ${AUTH_DATABASE_PORT}
+      DATABASE_NAME: ${AUTH_DATABASE_NAME}
+      DATABASE_USER: ${AUTH_DATABASE_USER}
+      DATABASE_PASSWORD: ${AUTH_DATABASE_PASSWORD}
+    ports:
+      - "9100:80"
+    networks:
+      - server_net
+
+  auth_database:
+    container_name: ${AUTH_DATABASE_HOST}
+    build: ./auth_database
+    environment:
+      POSTGRES_DB: ${AUTH_DATABASE_NAME}
+      POSTGRES_USER: ${AUTH_DATABASE_USER}
+      POSTGRES_PASSWORD: ${AUTH_DATABASE_PASSWORD}
+    command:
+      - 'postgres'
+      - '-c'
+      - 'port=${AUTH_DATABASE_PORT}'
+    volumes:
+      - auth_database_volume:/var/lib/postgresql/data
+    networks:
+      - server_net
+
+volumes:
+  auth_database_volume: {}
+
+networks:
+  server_net:
+    driver: bridge
