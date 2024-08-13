@@ -14,7 +14,7 @@ services:
       DATABASE_USER: ${AUTH_DATABASE_USER}
       DATABASE_PASSWORD: ${AUTH_DATABASE_PASSWORD}
     ports:
-      - "9100:80"
+      - "9101:80"
     networks:
       - server_net
 
