@@ -13,15 +13,19 @@ func init() {
 	router = gin.Default()
 	v1 := router.Group("/api/v1")
 	{
-		UserController := controllers.GetUserController()
-		user := v1.Group("/user")
+		userController := controllers.GetUserController()
+		users := v1.Group("/users")
 		{
-			user.GET(":id", UserController.GetId)
-			user.GET("", UserController.GetAll)
-			user.POST("", UserController.Post)
-			user.PUT("", UserController.Put)
-			user.DELETE("", UserController.Delete)
+			users.GET("/:id", userController.GetUserById)
+			users.GET("", userController.GetAllUsers)
+			users.DELETE("/:id", userController.DeleteUserById)
 		}
+
+		authController := controllers.GetAuthController()
+		v1.POST("/registration", authController.Registration)
+		v1.POST("/authorization", authController.Authorization)
+		v1.PUT("/refresh", authController.RefreshToken)
+		v1.GET("/data", authController.ExtractData)
 	}
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "route is not found"})
